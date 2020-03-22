@@ -15,13 +15,12 @@ public class Sponsor {
 
 	@Id
 	@GeneratedValue(strategy = GenerationType.AUTO)
-	@Column(unique = true)
+	private long id;
+	@Column(nullable = false)
 	private String name; // primary key, >= two characters after trimming white spaces
-
 	private String description;
 	@Embedded
 	private Address address;
-
 	@ManyToMany
 	private List<Player> beneficiaries;
 

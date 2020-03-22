@@ -10,7 +10,6 @@ import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.ManyToOne;
 import javax.persistence.OneToMany;
-import javax.validation.constraints.NotNull;
 
 @Entity
 public class Player {
@@ -18,24 +17,17 @@ public class Player {
 	@Id
 	@GeneratedValue(strategy = GenerationType.AUTO)
 	private long id; // primary key
-
-	@NotNull
+	@Column(nullable = false)
 	private String firstname;
-
-	@NotNull
+	@Column(nullable = false)
 	private String lastname;
-
-	@Column(unique = true)
+	@Column(unique = true, nullable = false)
 	private String email;
-
 	private String description;
-
 	@Embedded
 	private Address address;
-
 	@ManyToOne
 	private Sponsor sponsor;
-
 	@OneToMany
 	private List<Player> opponents;
 

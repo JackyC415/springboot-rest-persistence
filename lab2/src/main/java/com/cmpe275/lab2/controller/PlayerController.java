@@ -10,13 +10,13 @@ import com.cmpe275.lab2.model.Player;
 
 @Controller
 public class PlayerController {
-	
+
 	@Autowired
 	private PlayerRepository playerRepository;
-	
-	@GetMapping(path="/test")
-	  public @ResponseBody Iterable<Player> getAllUsers() {
-	    return playerRepository.findAll();
-	  }
-	
+
+	@GetMapping(path = "/test")
+	public @ResponseBody Iterable<Player> getAllUsers() {
+		return playerRepository.findAll();
+	}
+
 }
