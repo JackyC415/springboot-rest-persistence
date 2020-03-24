@@ -25,7 +25,8 @@ public class Sponsor {
 	private Address address;
 	/*
 	@ManyToMany
-	private List<Player> beneficiaries;*/
+	private List<Player> beneficiaries;
+	*/
 
 	public String getName() {
 		return name;
