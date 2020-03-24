@@ -9,8 +9,10 @@ import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.ManyToMany;
+import javax.persistence.Table;
 
 @Entity
+@Table(name="sponsor")
 public class Sponsor {
 
 	@Id
@@ -21,8 +23,9 @@ public class Sponsor {
 	private String description;
 	@Embedded
 	private Address address;
+	/*
 	@ManyToMany
-	private List<Player> beneficiaries;
+	private List<Player> beneficiaries;*/
 
 	public String getName() {
 		return name;
@@ -48,12 +51,13 @@ public class Sponsor {
 		this.address = address;
 	}
 
+	/*
 	public List<Player> getBeneficiaries() {
 		return beneficiaries;
 	}
 
 	public void setBeneficiaries(List<Player> beneficiaries) {
 		this.beneficiaries = beneficiaries;
-	}
+	}*/
 
 }

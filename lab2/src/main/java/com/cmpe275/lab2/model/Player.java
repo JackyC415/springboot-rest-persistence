@@ -10,8 +10,10 @@ import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.ManyToOne;
 import javax.persistence.OneToMany;
+import javax.persistence.Table;
 
 @Entity
+@Table(name="player")
 public class Player {
 
 	@Id
@@ -26,10 +28,11 @@ public class Player {
 	private String description;
 	@Embedded
 	private Address address;
+	/*
 	@ManyToOne
 	private Sponsor sponsor;
 	@OneToMany
-	private List<Player> opponents;
+	private List<Player> opponents;*/
 
 	public long getId() {
 		return id;
@@ -79,6 +82,7 @@ public class Player {
 		this.address = address;
 	}
 
+	/*
 	public Sponsor getSponsor() {
 		return sponsor;
 	}
@@ -93,6 +97,6 @@ public class Player {
 
 	public void setOpponents(List<Player> opponents) {
 		this.opponents = opponents;
-	}
+	}*/
 
 }
