@@ -17,8 +17,6 @@ public class Sponsor {
 
 	@Id
 	@GeneratedValue(strategy = GenerationType.AUTO)
-	private long id;
-
 	@Column(name = "name", nullable = false)
 	private String name; // primary key, >= two characters after trimming white spaces
 
