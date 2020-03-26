@@ -9,30 +9,37 @@ import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.ManyToOne;
-import javax.persistence.OneToMany;
+import javax.persistence.ManyToMany;
 import javax.persistence.Table;
 
 @Entity
-@Table(name="player")
+@Table(name = "player")
 public class Player {
 
 	@Id
 	@GeneratedValue(strategy = GenerationType.AUTO)
 	private long id; // primary key
-	@Column(nullable = false)
+
+	@Column(name = "fname", nullable = false)
 	private String firstname;
-	@Column(nullable = false)
+
+	@Column(name = "lname", nullable = false)
 	private String lastname;
-	@Column(unique = true, nullable = false)
+
+	@Column(name = "email", unique = true, nullable = false)
 	private String email;
+
+	@Column(name = "description")
 	private String description;
+
 	@Embedded
 	private Address address;
+
 	/*
-	@ManyToOne
-	private Sponsor sponsor;
-	@OneToMany
-	private List<Player> opponents;*/
+	 * @ManyToOne private Sponsor sponsor;
+	 * 
+	 * @ManyToMany private List<Player> opponents;
+	 */
 
 	public long getId() {
 		return id;
@@ -83,20 +90,14 @@ public class Player {
 	}
 
 	/*
-	public Sponsor getSponsor() {
-		return sponsor;
-	}
-
-	public void setSponsor(Sponsor sponsor) {
-		this.sponsor = sponsor;
-	}
-
-	public List<Player> getOpponents() {
-		return opponents;
-	}
-
-	public void setOpponents(List<Player> opponents) {
-		this.opponents = opponents;
-	}*/
+	 * public Sponsor getSponsor() { return sponsor; }
+	 * 
+	 * public void setSponsor(Sponsor sponsor) { this.sponsor = sponsor; }
+	 * 
+	 * public List<Player> getOpponents() { return opponents; }
+	 * 
+	 * public void setOpponents(List<Player> opponents) { this.opponents =
+	 * opponents; }
+	 */
 
 }
