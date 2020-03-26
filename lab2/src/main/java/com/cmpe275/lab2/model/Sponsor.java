@@ -12,21 +12,25 @@ import javax.persistence.ManyToMany;
 import javax.persistence.Table;
 
 @Entity
-@Table(name="sponsor")
+@Table(name = "sponsor")
 public class Sponsor {
 
 	@Id
 	@GeneratedValue(strategy = GenerationType.AUTO)
 	private long id;
-	@Column(nullable = false)
+
+	@Column(name = "name", nullable = false)
 	private String name; // primary key, >= two characters after trimming white spaces
+
+	@Column(name = "description")
 	private String description;
+
 	@Embedded
 	private Address address;
+
 	/*
-	@ManyToMany
-	private List<Player> beneficiaries;
-	*/
+	 * @ManyToMany private List<Player> beneficiaries;
+	 */
 
 	public String getName() {
 		return name;
@@ -53,12 +57,10 @@ public class Sponsor {
 	}
 
 	/*
-	public List<Player> getBeneficiaries() {
-		return beneficiaries;
-	}
-
-	public void setBeneficiaries(List<Player> beneficiaries) {
-		this.beneficiaries = beneficiaries;
-	}*/
+	 * public List<Player> getBeneficiaries() { return beneficiaries; }
+	 * 
+	 * public void setBeneficiaries(List<Player> beneficiaries) { this.beneficiaries
+	 * = beneficiaries; }
+	 */
 
 }
