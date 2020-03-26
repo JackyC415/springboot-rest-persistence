@@ -1,7 +1,6 @@
 package com.cmpe275.lab2.controller;
 
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -23,14 +22,20 @@ public class PlayerController {
 	private PlayerService playerService;
 
 	/*
-	 * Required Parameters: Only the firstname, lastname, and email are required. Anything else is optional. 
-	 * Opponents is not allowed to be passed in as a parameter. 
-	 * You are not allowed to provide the ID of the player either, as the server is supposed to assign the ID. 
-	 * The sponsor parameter, if present, must be the ID of an existing sponsor. 
-	 * The request returns the newly created player object in its deep form, encoded in the requested format, JSON or XML, in its HTTP payload.
+	 * (1) Create a player 
+	 * Path: player?firstname=XX&lastname=YY&email=ZZ&description=UU&street=VV$... 
+	 * Method: POST
+	 * 
+	 * Required Parameters: Only the firstname, lastname, and email are required.
+	 * Anything else is optional. Opponents is not allowed to be passed in as a
+	 * parameter. You are not allowed to provide the ID of the player either, as the
+	 * server is supposed to assign the ID. The sponsor parameter, if present, must
+	 * be the ID of an existing sponsor. The request returns the newly created
+	 * player object in its deep form, encoded in the requested format, JSON or XML,
+	 * in its HTTP payload.
 	 */
 	@PostMapping("/player")
-	public ResponseEntity<HttpStatus> createPlayer(@RequestParam(value = "fname", required = true) String fname,
+	public ResponseEntity<Player> createPlayer(@RequestParam(value = "fname", required = true) String fname,
 			@RequestParam(value = "lname", required = true) String lname,
 			@RequestParam(value = "email", required = true) String email,
 			@RequestParam(value = "description", required = false) String description,
@@ -39,12 +44,13 @@ public class PlayerController {
 			@RequestParam(value = "state", required = false) String state,
 			@RequestParam(value = "zip", required = false) String zip) {
 
+		Player player = null;
 		playerService.createPlayer();
 
 		// Error Handling: Return the HTTP status code 400 for errors like missing
 		// required parameters or bad parameters; return 409 if a player with the same
 		// email ID already exists.
-		return ResponseEntity.ok(HttpStatus.OK);
+		return ResponseEntity.ok(player);
 	}
 
 	/*
@@ -74,7 +80,7 @@ public class PlayerController {
 	 * The object constructed from the parameters will completely replace the existing object in the server, except that it does not change the player’s list of opponents.
 	 */
 	@PutMapping("/player/{id}")
-	public ResponseEntity<HttpStatus> updatePlayer(@PathVariable(value = "id") Long playerId,
+	public ResponseEntity<Player> updatePlayer(@PathVariable(value = "id") Long playerId,
 			@RequestParam(value = "lname", required = true) String lname,
 			@RequestParam(value = "email", required = true) String email,
 			@RequestParam(value = "description", required = false) String description,
@@ -83,11 +89,12 @@ public class PlayerController {
 			@RequestParam(value = "state", required = false) String state,
 			@RequestParam(value = "zip", required = false) String zip) {
 
+		Player player = null;
 		playerService.updatePlayer();
 
 		// Error Handling: If the player of the given user ID does not exist, the HTTP
 		// return code should be 404; if the given ID is not a valid number, return 400.
-		return ResponseEntity.ok(HttpStatus.OK);
+		return ResponseEntity.ok(player);
 	}
 
 	/*
@@ -98,13 +105,14 @@ public class PlayerController {
 	 * When a player is deleted, the relevant opponent and sponsoring relationships are cascadingly removed too.
 	 */
 	@DeleteMapping("/player/{id}")
-	public ResponseEntity<HttpStatus> deletePlayer(@PathVariable(value = "id") Long playerId) {
+	public ResponseEntity<Player> deletePlayer(@PathVariable(value = "id") Long playerId) {
 
+		Player player = null;
 		playerService.deletePlayer();
 
 		// Error Handling: If the player with the given ID does not exist, return 404.
 		// Return 400 for other bad requests.
-		return ResponseEntity.ok(HttpStatus.OK);
+		return ResponseEntity.ok(player);
 	}
 
 }
