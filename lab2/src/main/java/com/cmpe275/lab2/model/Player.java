@@ -1,15 +1,20 @@
 package com.cmpe275.lab2.model;
 
+
+import java.util.ArrayList;
 import java.util.List;
 
+import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Embedded;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
-import javax.persistence.ManyToOne;
+import javax.persistence.JoinColumn;
+import javax.persistence.JoinTable;
 import javax.persistence.ManyToMany;
+import javax.persistence.ManyToOne;
 import javax.persistence.Table;
 
 @Entity
@@ -18,12 +23,13 @@ public class Player {
 
 	@Id
 	@GeneratedValue(strategy = GenerationType.AUTO)
+	@Column(name = "id")
 	private long id; // primary key
 
-	@Column(name = "fname", nullable = false)
+	@Column(name = "first_name", nullable = false)
 	private String firstname;
 
-	@Column(name = "lname", nullable = false)
+	@Column(name = "last_name", nullable = false)
 	private String lastname;
 
 	@Column(name = "email", unique = true, nullable = false)
@@ -35,11 +41,65 @@ public class Player {
 	@Embedded
 	private Address address;
 
-	/*
-	 * @ManyToOne private Sponsor sponsor;
-	 * 
-	 * @ManyToMany private List<Player> opponents;
-	 */
+	@ManyToOne(cascade = {CascadeType.DETACH,CascadeType.MERGE,CascadeType.PERSIST,CascadeType.REFRESH})
+	@JoinColumn(name = "sponsor_id")
+	private Sponsor sponsor;
+	
+	@ManyToMany
+	@JoinTable(name="opponents_table",
+	 joinColumns=@JoinColumn(name="player_id"),
+	 inverseJoinColumns=@JoinColumn(name="opponent_id")
+	)
+	private List<Player>opponents;
+	
+	@ManyToMany
+	@JoinTable(name="opponents_table",
+	 joinColumns=@JoinColumn(name="opponent_id"),
+	 inverseJoinColumns=@JoinColumn(name="player_id")
+	)
+	private List<Player>opponentsOf;
+	
+	public Player() {
+		// TODO Auto-generated constructor stub
+	}
+	
+	
+	public Player(long id, String firstname, String lastname, String email, String description, Address address) {
+		this.id = id;
+		this.firstname = firstname;
+		this.lastname = lastname;
+		this.email = email;
+		this.description = description;
+		this.address = address;
+	}
+
+	public List<Player> getOpponents() {
+		return opponents;
+	}
+
+
+	public void setOpponents(List<Player> opponents) {
+		this.opponents = opponents;
+	}
+
+
+	public List<Player> getOpponentsOf() {
+		return opponentsOf;
+	}
+
+
+	public void setOpponentsOf(List<Player> opponentsOf) {
+		this.opponentsOf = opponentsOf;
+	}
+
+
+	public Sponsor getSponsor() {
+		return sponsor;
+	}
+
+	public void setSponsor(Sponsor sponsor) {
+		this.sponsor = sponsor;
+	}
 
 	public long getId() {
 		return id;
@@ -89,15 +149,20 @@ public class Player {
 		this.address = address;
 	}
 
-	/*
-	 * public Sponsor getSponsor() { return sponsor; }
-	 * 
-	 * public void setSponsor(Sponsor sponsor) { this.sponsor = sponsor; }
-	 * 
-	 * public List<Player> getOpponents() { return opponents; }
-	 * 
-	 * public void setOpponents(List<Player> opponents) { this.opponents =
-	 * opponents; }
-	 */
-
+	@Override
+	public String toString() {
+		return "Player [id=" + id + ", firstname=" + firstname + ", lastname=" + lastname + ", email=" + email
+				+ ", description=" + description + ", address=" + address + "]";
+	}
+	
+	
+	public void addOpponent(Player player) {
+		if(this.opponents==null) {
+			this.opponents=new ArrayList<Player>();
+		}
+		this.opponents.add(player);
+		List<Player>oppnentsOf=player.getOpponents();
+		oppnentsOf.add(this);
+	}
+	
 }
