@@ -181,12 +181,12 @@ public class Player {
 				
 		
 		//add opponentOf for opponent player
-		List<Player>opponentsOf=opponent.getOpponentsOf();
-		if(opponentsOf==null) {
-			opponentsOf=new ArrayList<Player>();
+		List<Player>opponentsOf1=opponent.getOpponentsOf();
+		if(opponentsOf1==null) {
+			opponentsOf1=new ArrayList<Player>();
 		}
-		opponentsOf.add(this);
-		opponent.setOpponentsOf(opponentsOf);
+		opponentsOf1.add(this);
+		opponent.setOpponentsOf(opponentsOf1);
 		
 	}
 	
