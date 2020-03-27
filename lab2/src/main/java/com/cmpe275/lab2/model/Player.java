@@ -156,13 +156,38 @@ public class Player {
 	}
 	
 	
-	public void addOpponent(Player player) {
+	public void addOpponent(Player opponent) {
+		
+		//add in opponent for main player
 		if(this.opponents==null) {
 			this.opponents=new ArrayList<Player>();
 		}
-		this.opponents.add(player);
-		List<Player>oppnentsOf=player.getOpponents();
-		oppnentsOf.add(this);
+		this.opponents.add(opponent);
+		
+		//add in opponentOf for the main player
+		if(this.opponentsOf==null) {
+			this.opponentsOf=new ArrayList<Player>();
+		}
+		this.opponentsOf.add(opponent);
+		
+		
+		//add in opponent for the opponent player
+		List<Player>opponents1=opponent.getOpponents();
+		if(opponents1==null) {
+			opponents1=new ArrayList<Player>();
+		}
+		opponents1.add(this);
+		opponent.setOpponents(opponents1);
+				
+		
+		//add opponentOf for opponent player
+		List<Player>opponentsOf=opponent.getOpponentsOf();
+		if(opponentsOf==null) {
+			opponentsOf=new ArrayList<Player>();
+		}
+		opponentsOf.add(this);
+		opponent.setOpponentsOf(opponentsOf);
+		
 	}
 	
 }
