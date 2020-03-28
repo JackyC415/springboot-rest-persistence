@@ -33,7 +33,7 @@ public class SponsorController {
 	 * requested format in the HTTP payload.
 	 */
 	@PostMapping("/sponsor")
-	public ResponseEntity<Sponsor> createSponsor(@RequestParam(value = "name", required = true) String name,
+	public Sponsor createSponsor(@RequestParam(value = "name", required = true) String name,
 			@RequestParam(value = "description", required = false) String description,
 			@RequestParam(value = "street", required = false) String street,
 			@RequestParam(value = "city", required = false) String city,
@@ -45,7 +45,7 @@ public class SponsorController {
 
 		// Error Handling: If the sponsor object already exists, return 409. For other
 		// bad requests, return 400.
-		return ResponseEntity.ok(sponsor);
+		return null;
 	}
 
 	/*
@@ -56,14 +56,14 @@ public class SponsorController {
 	 * This returns a deep sponsor object in the requested format in its HTTP payload.
 	 */
 	@GetMapping("/sponsor/{name}")
-	public ResponseEntity<Sponsor> getSponsor(@PathVariable(value = "name") String sponsorName) {
+	public Sponsor getSponsor(@PathVariable(value = "name") String sponsorName) {
 
 		Sponsor sponsor = null;
 //		sponsorService.getSponsor();
 
 		// Error Handling: If the sponsor of the given name does not exist, the HTTP
 		// return code should be 404; otherwise, 200.
-		return ResponseEntity.ok(sponsor);
+		return null;
 	}
 
 	/*
@@ -79,7 +79,7 @@ public class SponsorController {
 	 */
 
 	@PutMapping("/sponsor/{name}")
-	public ResponseEntity<Sponsor> updateSponsor(@PathVariable(value = "name") String sponsorName,
+	public Sponsor updateSponsor(@PathVariable(value = "name") String sponsorName,
 			@RequestParam(value = "description", required = false) String description,
 			@RequestParam(value = "street", required = false) String street,
 			@RequestParam(value = "city", required = false) String city,
@@ -91,7 +91,7 @@ public class SponsorController {
 
 		// Error Handling: If the sponsor name does not exist, 404 should be returned.
 		// If required parameters are missing, return 400 instead. Otherwise, return 200.
-		return ResponseEntity.ok(sponsor);
+		return null;
 	}
 
 	/*
@@ -104,14 +104,14 @@ public class SponsorController {
 	 */
 
 	@DeleteMapping("/sponsor/{name}")
-	public ResponseEntity<Sponsor> deletePlayer(@PathVariable(value = "name") String sponsorName) {
+	public Sponsor deletePlayer(@PathVariable(value = "name") String sponsorName) {
 
 		Sponsor sponsor = null;
 //		sponsorService.deleteSponsor();
 
 		// Error Handling: If there is still any player benefiting from this sponsor,
 		// return 400. If the sponsor with the given name does not exist, return 404.
-		return ResponseEntity.ok(sponsor);
+		return null;
 	}
 
 }

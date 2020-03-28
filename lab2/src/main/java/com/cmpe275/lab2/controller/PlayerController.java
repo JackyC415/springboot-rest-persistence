@@ -36,7 +36,7 @@ public class PlayerController {
 	 * in its HTTP payload.
 	 */
 	@PostMapping("/player")
-	public ResponseEntity<Player> createPlayer(@RequestParam(value = "fname", required = true) String fname,
+	public Player createPlayer(@RequestParam(value = "fname", required = true) String fname,
 			@RequestParam(value = "lname", required = true) String lname,
 			@RequestParam(value = "email", required = true) String email,
 			@RequestParam(value = "description", required = false) String description,
@@ -48,12 +48,12 @@ public class PlayerController {
 
 		Address address = new Address(street,city,state,zip);
 		Player player = new Player(fname, lname, email, description, address);
-		playerService.createPlayer(player, sname);
+		Player resultPlayer=playerService.createPlayer(player, sname);
 
 		// Error Handling: Return the HTTP status code 400 for errors like missing
 		// required parameters or bad parameters; return 409 if a player with the same
 		// email ID already exists.
-		return ResponseEntity.ok(player);
+		return resultPlayer;
 	}
 
 	/*
@@ -63,14 +63,14 @@ public class PlayerController {
 	 * This returns a deep player object in the requested format in its HTTP payload.
 	 */
 	@GetMapping("/player/{id}")
-	public ResponseEntity<Player> getPlayer(@PathVariable(value = "id") Long playerId) {
+	public Player getPlayer(@PathVariable(value = "id") Long playerId) {
 
 		Player player = null;
 //		playerService.getPlayer();
 
 		// Error Handling: If the player of the given user ID does not exist, the HTTP
 		// return code should be 404; if the given ID is not a valid number, return 400.
-		return ResponseEntity.ok(player);
+		return null;
 	}
 
 	/**
@@ -83,7 +83,7 @@ public class PlayerController {
 	 * The object constructed from the parameters will completely replace the existing object in the server, except that it does not change the player’s list of opponents.
 	 */
 	@PutMapping("/player/{id}")
-	public ResponseEntity<Player> updatePlayer(@PathVariable(value = "id") Long playerId,
+	public Player updatePlayer(@PathVariable(value = "id") Long playerId,
 			@RequestParam(value = "lname", required = true) String lname,
 			@RequestParam(value = "email", required = true) String email,
 			@RequestParam(value = "description", required = false) String description,
@@ -97,7 +97,7 @@ public class PlayerController {
 
 		// Error Handling: If the player of the given user ID does not exist, the HTTP
 		// return code should be 404; if the given ID is not a valid number, return 400.
-		return ResponseEntity.ok(player);
+		return null;
 	}
 
 	/*
@@ -108,14 +108,14 @@ public class PlayerController {
 	 * When a player is deleted, the relevant opponent and sponsoring relationships are cascadingly removed too.
 	 */
 	@DeleteMapping("/player/{id}")
-	public ResponseEntity<Player> deletePlayer(@PathVariable(value = "id") Long playerId) {
+	public Player deletePlayer(@PathVariable(value = "id") Long playerId) {
 
 		Player player = null;
 //		playerService.deletePlayer();
 
 		// Error Handling: If the player with the given ID does not exist, return 404.
 		// Return 400 for other bad requests.
-		return ResponseEntity.ok(player);
+		return null;
 	}
 
 }
