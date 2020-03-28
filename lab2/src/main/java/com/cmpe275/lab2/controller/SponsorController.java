@@ -11,11 +11,11 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
+import com.cmpe275.lab2.model.Address;
 import com.cmpe275.lab2.model.Sponsor;
 import com.cmpe275.lab2.service.SponsorService;
 
 @RestController
-@RequestMapping("/sponsor")
 public class SponsorController {
 
 	@Autowired
@@ -40,12 +40,13 @@ public class SponsorController {
 			@RequestParam(value = "state", required = false) String state,
 			@RequestParam(value = "zip", required = false) String zip) {
 
-		Sponsor sponsor = null;
-//		sponsorService.createSponsor();
+		Address address = new Address(street,city,state,zip);
+		Sponsor sponsor = new Sponsor(name, description, address);
+		Sponsor newSponsor = sponsorService.createSponsor(sponsor);
 
 		// Error Handling: If the sponsor object already exists, return 409. For other
 		// bad requests, return 400.
-		return null;
+		return newSponsor;
 	}
 
 	/*
