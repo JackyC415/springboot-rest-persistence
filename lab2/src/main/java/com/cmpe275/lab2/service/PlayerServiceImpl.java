@@ -4,6 +4,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import com.cmpe275.lab2.dao.PlayerRepository;
+import com.cmpe275.lab2.errors.AlreadyExistsException;
 import com.cmpe275.lab2.model.Player;
 
 /*
@@ -20,8 +21,7 @@ public class PlayerServiceImpl implements PlayerService {
 		try {
 			Player existingPlayer = playerDao.findByEmail(player.getEmail());
 			if (existingPlayer != null) {
-				System.out.print("Player already registered!");
-				return null;
+				throw new AlreadyExistsException("Player with given Id already present");
 			} else {
 				Player newPlayer = new Player(player.getFirstname(), player.getLastname(), player.getEmail());
 				newPlayer.setDescription(player.getDescription());
@@ -29,8 +29,7 @@ public class PlayerServiceImpl implements PlayerService {
 				return playerDao.save(newPlayer);
 			}
 		} catch (Exception e) {
-			System.out.println("Unable to create player!");
-			throw e;
+			throw new RuntimeException(e.fillInStackTrace());
 		}
 	}
 
