@@ -64,13 +64,10 @@ public class Player {
 	}
 	
 	
-	public Player(long id, String firstname, String lastname, String email, String description, Address address) {
-		this.id = id;
+	public Player(String firstname, String lastname, String email) {
 		this.firstname = firstname;
 		this.lastname = lastname;
 		this.email = email;
-		this.description = description;
-		this.address = address;
 	}
 
 	public List<Player> getOpponents() {
