@@ -17,9 +17,21 @@ public class PlayerServiceImpl implements PlayerService {
 	
 	@Override
 	public Player createPlayer(Player player, String sponsorName) {
-		// TODO Auto-generated method stub
-		
-		return null;
+		try {
+			Player existingPlayer = playerDao.findByEmail(player.getEmail());
+			if (existingPlayer != null) {
+				System.out.print("Player already registered!");
+				return null;
+			} else {
+				Player newPlayer = new Player(player.getFirstname(), player.getLastname(), player.getEmail());
+				newPlayer.setDescription(player.getDescription());
+				newPlayer.setAddress(player.getAddress());
+				return playerDao.save(newPlayer);
+			}
+		} catch (Exception e) {
+			System.out.println("Unable to create player!");
+			throw e;
+		}
 	}
 
 	@Override
