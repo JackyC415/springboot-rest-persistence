@@ -11,27 +11,28 @@ import com.cmpe275.lab2.model.Sponsor;
 public class SponsorServiceImpl implements SponsorService {
 
 	@Override
-	public Sponsor createSponsor() {
+	public Sponsor createSponsor(Sponsor sponsor) {
 		// TODO Auto-generated method stub
 		return null;
 	}
 
 	@Override
-	public Sponsor updateSponsor() {
+	public Sponsor updateSponsor(Sponsor sponsor) {
 		// TODO Auto-generated method stub
 		return null;
 	}
 
 	@Override
-	public Sponsor getSponsor() {
+	public Sponsor getSponsor(String name) {
 		// TODO Auto-generated method stub
 		return null;
 	}
 
 	@Override
-	public Sponsor deleteSponsor() {
+	public Sponsor deleteSponsor(String name) {
 		// TODO Auto-generated method stub
 		return null;
 	}
 
+	
 }

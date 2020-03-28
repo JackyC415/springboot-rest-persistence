@@ -7,9 +7,9 @@ import com.cmpe275.lab2.model.Sponsor;
  * */
 public interface SponsorService {
 
-	Sponsor createSponsor();
-	Sponsor updateSponsor();
-	Sponsor getSponsor();
-	Sponsor deleteSponsor();
+	public Sponsor createSponsor(Sponsor sponsor);
+	public Sponsor updateSponsor(Sponsor sponsor);
+	public Sponsor getSponsor(String name);
+	public Sponsor deleteSponsor(String name);
 	
 }

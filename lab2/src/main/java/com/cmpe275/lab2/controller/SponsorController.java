@@ -41,7 +41,7 @@ public class SponsorController {
 			@RequestParam(value = "zip", required = false) String zip) {
 
 		Sponsor sponsor = null;
-		sponsorService.createSponsor();
+//		sponsorService.createSponsor();
 
 		// Error Handling: If the sponsor object already exists, return 409. For other
 		// bad requests, return 400.
@@ -59,7 +59,7 @@ public class SponsorController {
 	public ResponseEntity<Sponsor> getSponsor(@PathVariable(value = "name") String sponsorName) {
 
 		Sponsor sponsor = null;
-		sponsorService.getSponsor();
+//		sponsorService.getSponsor();
 
 		// Error Handling: If the sponsor of the given name does not exist, the HTTP
 		// return code should be 404; otherwise, 200.
@@ -87,7 +87,7 @@ public class SponsorController {
 			@RequestParam(value = "zip", required = false) String zip) {
 
 		Sponsor sponsor = null;
-		sponsorService.updateSponsor();
+//		sponsorService.updateSponsor();
 
 		// Error Handling: If the sponsor name does not exist, 404 should be returned.
 		// If required parameters are missing, return 400 instead. Otherwise, return 200.
@@ -107,7 +107,7 @@ public class SponsorController {
 	public ResponseEntity<Sponsor> deletePlayer(@PathVariable(value = "name") String sponsorName) {
 
 		Sponsor sponsor = null;
-		sponsorService.deleteSponsor();
+//		sponsorService.deleteSponsor();
 
 		// Error Handling: If there is still any player benefiting from this sponsor,
 		// return 400. If the sponsor with the given name does not exist, return 404.

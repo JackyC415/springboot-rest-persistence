@@ -45,7 +45,7 @@ public class PlayerController {
 			@RequestParam(value = "zip", required = false) String zip) {
 
 		Player player = null;
-		playerService.createPlayer();
+//		playerService.createPlayer();
 
 		// Error Handling: Return the HTTP status code 400 for errors like missing
 		// required parameters or bad parameters; return 409 if a player with the same
@@ -63,7 +63,7 @@ public class PlayerController {
 	public ResponseEntity<Player> getPlayer(@PathVariable(value = "id") Long playerId) {
 
 		Player player = null;
-		playerService.getPlayer();
+//		playerService.getPlayer();
 
 		// Error Handling: If the player of the given user ID does not exist, the HTTP
 		// return code should be 404; if the given ID is not a valid number, return 400.
@@ -90,7 +90,7 @@ public class PlayerController {
 			@RequestParam(value = "zip", required = false) String zip) {
 
 		Player player = null;
-		playerService.updatePlayer();
+//		playerService.updatePlayer();
 
 		// Error Handling: If the player of the given user ID does not exist, the HTTP
 		// return code should be 404; if the given ID is not a valid number, return 400.
@@ -108,7 +108,7 @@ public class PlayerController {
 	public ResponseEntity<Player> deletePlayer(@PathVariable(value = "id") Long playerId) {
 
 		Player player = null;
-		playerService.deletePlayer();
+//		playerService.deletePlayer();
 
 		// Error Handling: If the player with the given ID does not exist, return 404.
 		// Return 400 for other bad requests.

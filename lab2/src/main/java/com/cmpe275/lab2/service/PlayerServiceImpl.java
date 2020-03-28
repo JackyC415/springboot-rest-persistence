@@ -11,25 +11,25 @@ import com.cmpe275.lab2.model.Player;
 public class PlayerServiceImpl implements PlayerService {
 
 	@Override
-	public Player createPlayer() {
+	public Player createPlayer(Player player, String sponsorName) {
 		// TODO Auto-generated method stub
 		return null;
 	}
 
 	@Override
-	public Player updatePlayer() {
+	public Player updatePlayer(Player player, String sponsorName) {
 		// TODO Auto-generated method stub
 		return null;
 	}
 
 	@Override
-	public Player getPlayer() {
+	public Player getPlayer(int id) {
 		// TODO Auto-generated method stub
 		return null;
 	}
 
 	@Override
-	public Player deletePlayer() {
+	public Player deletePlayer(int id) {
 		// TODO Auto-generated method stub
 		return null;
 	}

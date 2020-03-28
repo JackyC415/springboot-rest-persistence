@@ -7,9 +7,8 @@ import com.cmpe275.lab2.model.Player;
  * */
 public interface PlayerService {
 	
-	Player createPlayer();
-	Player updatePlayer();
-	Player getPlayer();
-	Player deletePlayer();
-
+	public Player createPlayer(Player player,String sponsorName);
+	public Player updatePlayer(Player player,String sponsorName);
+	public Player getPlayer(int id);
+	public Player deletePlayer(int id);
 }

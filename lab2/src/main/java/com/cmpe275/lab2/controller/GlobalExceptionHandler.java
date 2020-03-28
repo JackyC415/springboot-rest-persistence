@@ -18,6 +18,16 @@ public class GlobalExceptionHandler {
 		return new ResponseEntity<ErrorResponse>(err, HttpStatus.NOT_FOUND);
 	}
 	
+	@ExceptionHandler
+	public ResponseEntity<ErrorResponse> handleException(AlreadyExistsException ex){
+		ErrorResponse err=new ErrorResponse();
+		err.setMessage(ex.getMessage());
+		err.setStatus(HttpStatus.CONFLICT.value());
+		err.setTimestamp(System.currentTimeMillis());
+		
+		return new ResponseEntity<ErrorResponse>(err, HttpStatus.CONFLICT);
+	}
+	
 	
 	@ExceptionHandler
 	public ResponseEntity<ErrorResponse> handleException(Exception ex){
