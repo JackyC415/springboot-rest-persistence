@@ -61,7 +61,9 @@ public class PlayerController {
 		if(sponsor!=null) {
 			sponsor=sponsor.trim();
 		}
-		
+		fname=fname.trim();
+		lname=lname.trim();
+		email=email.trim();
 		if(fname.length()==0 || lname.length()==0 || email.length()==0) {
 			throw new BadRequestException("missing required parameters or bad parameters");
 		}

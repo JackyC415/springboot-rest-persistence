@@ -5,6 +5,7 @@ import org.springframework.stereotype.Service;
 
 import com.cmpe275.lab2.dao.SponsorRepository;
 import com.cmpe275.lab2.errors.AlreadyExistsException;
+import com.cmpe275.lab2.errors.BadRequestException;
 import com.cmpe275.lab2.errors.NotFoundException;
 import com.cmpe275.lab2.model.Sponsor;
 
@@ -28,7 +29,7 @@ public class SponsorServiceImpl implements SponsorService {
 				return sponsorDao.save(newSponsor);
 			}
 		} catch (Exception e) {
-			throw new RuntimeException(e.fillInStackTrace());
+			throw new BadRequestException(e.fillInStackTrace());
 		}
 	}
 

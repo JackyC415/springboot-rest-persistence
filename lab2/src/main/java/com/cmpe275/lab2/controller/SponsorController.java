@@ -11,6 +11,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
+import com.cmpe275.lab2.errors.BadRequestException;
 import com.cmpe275.lab2.model.Address;
 import com.cmpe275.lab2.model.Sponsor;
 import com.cmpe275.lab2.service.SponsorService;
@@ -40,6 +41,25 @@ public class SponsorController {
 			@RequestParam(value = "state", required = false) String state,
 			@RequestParam(value = "zip", required = false) String zip) {
 
+		name=name.trim();
+		if(description!=null) {
+			description=description.trim();
+		}
+		if(street!=null) {
+			street=street.trim();
+		}
+		if(city!=null) {
+			city=city.trim();
+		}
+		if(state!=null) {
+			state=state.trim();
+		}
+		if(zip!=null) {
+			zip=zip.trim();
+		}
+		if(name.length()==0) {
+			throw new BadRequestException("name can not be empty");
+		}
 		Address address = new Address(street,city,state,zip);
 		Sponsor sponsor = new Sponsor(name, description, address);
 		Sponsor newSponsor = sponsorService.createSponsor(sponsor);
