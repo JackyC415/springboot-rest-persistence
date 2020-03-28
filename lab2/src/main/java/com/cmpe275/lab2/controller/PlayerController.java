@@ -75,12 +75,13 @@ public class PlayerController {
 		}
 		Address address = new Address(street,city,state,zip);
 		Player player = new Player(fname, lname, email, description, address);
+		
 		Player resultPlayer=playerService.createPlayer(player, sponsor);
 
 		// Error Handling: Return the HTTP status code 400 for errors like missing
 		// required parameters or bad parameters; return 409 if a player with the same
 		// email ID already exists.
-		return resultPlayer;
+		return new Player();
 	}
 
 	/*

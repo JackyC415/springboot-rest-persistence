@@ -28,26 +28,28 @@ public class PlayerServiceImpl implements PlayerService {
 	
 	@Override
 	public Player createPlayer(Player player, String sponsorName) {
-		try {
-			Player existingPlayer = playerDao.findByEmail(player.getEmail());
-			if (existingPlayer != null) {
-				throw new AlreadyExistsException("Player with given Id already present");
-			} else {
-				Player newPlayer = new Player(player.getFirstname(), player.getLastname(), player.getEmail());
-				newPlayer.setDescription(player.getDescription());
-				newPlayer.setAddress(player.getAddress());
-				if(sponsorName!=null && sponsorName.length()!=0) {
-					Optional<Sponsor> sponsorResult = sponsorDao.findById(sponsorName);
-					if(sponsorResult.isPresent()) {
-						newPlayer.setSponsor(sponsorResult.get());
-					}else {
-						throw new RuntimeException("Incorrect sponsor Id...Sponsor with given name is not valid");
-					}
+		Player existingPlayer = playerDao.findByEmail(player.getEmail());
+		if (existingPlayer != null) {
+			throw new AlreadyExistsException("Player with given Id already present");
+		} else {
+			Player newPlayer = new Player(player.getFirstname(), player.getLastname(), player.getEmail());
+			newPlayer.setDescription(player.getDescription());
+			newPlayer.setAddress(player.getAddress());
+			if(sponsorName!=null && sponsorName.length()!=0) {
+				Optional<Sponsor> sponsorResult = sponsorDao.findById(sponsorName);
+				if(sponsorResult.isPresent()) {
+					newPlayer.setSponsor(sponsorResult.get());
+				}else {
+					throw new RuntimeException("Incorrect sponsor Id...Sponsor with given name is not valid");
 				}
-				return playerDao.save(newPlayer);
 			}
-		} catch (Exception e) {
-			throw new BadRequestException(e.fillInStackTrace());
+			
+			try {
+				Player result = playerDao.save(newPlayer);
+				return result;
+			} catch (Exception e) {
+				throw new BadRequestException(e.getMessage());
+			}
 		}
 	}
 
@@ -55,9 +57,10 @@ public class PlayerServiceImpl implements PlayerService {
 	public Player updatePlayer(Player player, String sponsorName) {
 		try {
 			Optional<Player> existingPlayer = playerDao.findById(player.getId());
+			
 			if (!existingPlayer.isPresent()) {
 				System.out.println("inside not present");
-				throw new NotFoundException("Player with given Id already present");
+				throw new NotFoundException("Player with given Id not present");
 			} else {
 				List<Player> opponents = existingPlayer.get().getOpponents();
 				for(Player opponent:opponents) {
@@ -69,6 +72,7 @@ public class PlayerServiceImpl implements PlayerService {
 					if(sponsorResult.isPresent()) {
 						player.setSponsor(sponsorResult.get());
 					}else {
+						System.out.println("inside");
 						throw new RuntimeException("Incorrect sponsor Id...Sponsor with given name is not valid");
 					}
 				}

@@ -1,17 +1,7 @@
 package com.cmpe275.lab2.errors;
 
+@SuppressWarnings("serial")
 public class AlreadyExistsException extends RuntimeException{
-
-	public AlreadyExistsException() {
-		super();
-		// TODO Auto-generated constructor stub
-	}
-
-	public AlreadyExistsException(String message, Throwable cause, boolean enableSuppression,
-			boolean writableStackTrace) {
-		super(message, cause, enableSuppression, writableStackTrace);
-		// TODO Auto-generated constructor stub
-	}
 
 	public AlreadyExistsException(String message, Throwable cause) {
 		super(message, cause);
