@@ -36,8 +36,8 @@ public class PlayerController {
 	 * in its HTTP payload.
 	 */
 	@PostMapping("/player")
-	public Player createPlayer(@RequestParam(value = "fname", required = true) String fname,
-			@RequestParam(value = "lname", required = true) String lname,
+	public Player createPlayer(@RequestParam(value = "firstname", required = true) String fname,
+			@RequestParam(value = "lastname", required = true) String lname,
 			@RequestParam(value = "email", required = true) String email,
 			@RequestParam(value = "description", required = false) String description,
 			@RequestParam(value = "street", required = false) String street,
@@ -45,7 +45,26 @@ public class PlayerController {
 			@RequestParam(value = "state", required = false) String state,
 			@RequestParam(value = "zip", required = false) String zip,
 			@RequestParam(value = "sponsor", required = false) String sname) {
-
+		
+		if(description!=null) {
+			description=description.trim();
+		}
+		if(street!=null) {
+			street=street.trim();
+		}
+		if(city!=null) {
+			city=city.trim();
+		}
+		if(zip!=null) {
+			zip=zip.trim();
+		}
+		if(sname!=null) {
+			sname=sname.trim();
+		}
+		
+		if(fname.length()==0 || lname.length()==0 || email.length()==0) {
+			throw new RuntimeException("missing required parameters or bad parameters");
+		}
 		Address address = new Address(street,city,state,zip);
 		Player player = new Player(fname, lname, email, description, address);
 		Player resultPlayer=playerService.createPlayer(player, sname);
