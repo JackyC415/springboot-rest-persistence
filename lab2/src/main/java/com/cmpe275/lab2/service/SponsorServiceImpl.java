@@ -42,10 +42,10 @@ public class SponsorServiceImpl implements SponsorService {
 	public Sponsor getSponsor(String name) {
 		try {
 			Sponsor sponsor = sponsorDao.findByName(name);
-			if (sponsor == null) {
-				throw new NotFoundException("Sponsor does not exist!");
-			} else {
+			if (sponsor != null) {
 				return sponsor;
+			} else {
+				throw new NotFoundException("Sponsor does not exist!");
 			}
 		} catch (Exception e) {
 			throw new RuntimeException(e.fillInStackTrace());
@@ -56,11 +56,10 @@ public class SponsorServiceImpl implements SponsorService {
 	public Sponsor deleteSponsor(String name) {
 		try {
 			Sponsor sponsorName = sponsorDao.findByName(name);
-			if (sponsorName == null) {
+			if (sponsorName != null) {
 				throw new NotFoundException("Sponsor does not exist!");
 			} else {
-				// return sponsorDao.deleteById(name);
-				return null;
+				return sponsorDao.deleteByName(name);
 			}
 		} catch (Exception e) {
 			throw new RuntimeException(e.fillInStackTrace());
