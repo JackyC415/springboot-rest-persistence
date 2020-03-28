@@ -35,9 +35,8 @@ public class PlayerServiceImpl implements PlayerService {
 				newPlayer.setAddress(player.getAddress());
 				if(sponsorName.length()!=0) {
 					Optional<Sponsor> sponsorResult = sponsorDao.findById(sponsorName);
-					Sponsor existingSponsor = sponsorResult.get();
-					if(existingSponsor != null) {
-						newPlayer.setSponsor(existingSponsor);
+					if(sponsorResult != null) {
+						newPlayer.setSponsor(sponsorResult.get());
 					}else {
 						throw new RuntimeException("Incorrect sponsor Id...Sponsor with given name is not valid");
 					}
