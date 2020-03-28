@@ -11,6 +11,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
+import com.cmpe275.lab2.errors.BadRequestException;
 import com.cmpe275.lab2.model.Address;
 import com.cmpe275.lab2.model.Player;
 import com.cmpe275.lab2.service.PlayerService;
@@ -43,7 +44,7 @@ public class PlayerController {
 			@RequestParam(value = "city", required = false) String city,
 			@RequestParam(value = "state", required = false) String state,
 			@RequestParam(value = "zip", required = false) String zip,
-			@RequestParam(value = "sponsor", required = false) String sname) {
+			@RequestParam(value = "sponsor", required = false) String sponsor) {
 		
 		if(description!=null) {
 			description=description.trim();
@@ -57,16 +58,16 @@ public class PlayerController {
 		if(zip!=null) {
 			zip=zip.trim();
 		}
-		if(sname!=null) {
-			sname=sname.trim();
+		if(sponsor!=null) {
+			sponsor=sponsor.trim();
 		}
 		
 		if(fname.length()==0 || lname.length()==0 || email.length()==0) {
-			throw new RuntimeException("missing required parameters or bad parameters");
+			throw new BadRequestException("missing required parameters or bad parameters");
 		}
 		Address address = new Address(street,city,state,zip);
 		Player player = new Player(fname, lname, email, description, address);
-		Player resultPlayer=playerService.createPlayer(player, sname);
+		Player resultPlayer=playerService.createPlayer(player, sponsor);
 
 		// Error Handling: Return the HTTP status code 400 for errors like missing
 		// required parameters or bad parameters; return 409 if a player with the same

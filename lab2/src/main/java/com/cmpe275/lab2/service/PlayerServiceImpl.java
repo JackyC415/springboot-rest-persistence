@@ -8,6 +8,7 @@ import org.springframework.stereotype.Service;
 import com.cmpe275.lab2.dao.PlayerRepository;
 import com.cmpe275.lab2.dao.SponsorRepository;
 import com.cmpe275.lab2.errors.AlreadyExistsException;
+import com.cmpe275.lab2.errors.BadRequestException;
 import com.cmpe275.lab2.model.Player;
 import com.cmpe275.lab2.model.Sponsor;
 
@@ -33,9 +34,9 @@ public class PlayerServiceImpl implements PlayerService {
 				Player newPlayer = new Player(player.getFirstname(), player.getLastname(), player.getEmail());
 				newPlayer.setDescription(player.getDescription());
 				newPlayer.setAddress(player.getAddress());
-				if(sponsorName.length()!=0) {
+				if(sponsorName!=null && sponsorName.length()!=0) {
 					Optional<Sponsor> sponsorResult = sponsorDao.findById(sponsorName);
-					if(sponsorResult != null) {
+					if(sponsorResult.isPresent()) {
 						newPlayer.setSponsor(sponsorResult.get());
 					}else {
 						throw new RuntimeException("Incorrect sponsor Id...Sponsor with given name is not valid");
@@ -44,7 +45,7 @@ public class PlayerServiceImpl implements PlayerService {
 				return playerDao.save(newPlayer);
 			}
 		} catch (Exception e) {
-			throw new RuntimeException(e.fillInStackTrace());
+			throw new BadRequestException(e.fillInStackTrace());
 		}
 	}
 

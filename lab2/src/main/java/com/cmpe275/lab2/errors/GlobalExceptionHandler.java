@@ -27,15 +27,13 @@ public class GlobalExceptionHandler {
 		
 		return new ResponseEntity<ErrorResponse>(err, HttpStatus.CONFLICT);
 	}
-	
-	
 	@ExceptionHandler
-	public ResponseEntity<ErrorResponse> handleException(Exception ex){
+	public ResponseEntity<ErrorResponse> handleException(BadRequestException ex){
 		ErrorResponse err=new ErrorResponse();
 		err.setMessage(ex.getMessage());
-		err.setStatus(HttpStatus.BAD_REQUEST.value());
+		err.setStatus(HttpStatus.CONFLICT.value());
 		err.setTimestamp(System.currentTimeMillis());
 		
-		return new ResponseEntity<ErrorResponse>(err, HttpStatus.BAD_REQUEST);
+		return new ResponseEntity<ErrorResponse>(err, HttpStatus.CONFLICT);
 	}
 }
