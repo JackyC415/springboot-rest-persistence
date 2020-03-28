@@ -1,7 +1,9 @@
 package com.cmpe275.lab2.service;
 
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import com.cmpe275.lab2.dao.SponsorRepository;
 import com.cmpe275.lab2.model.Sponsor;
 
 /*
@@ -10,9 +12,11 @@ import com.cmpe275.lab2.model.Sponsor;
 @Service
 public class SponsorServiceImpl implements SponsorService {
 
+	@Autowired
+	private SponsorRepository sponsorDao;
+	
 	@Override
-	public Sponsor createSponsor(Sponsor sponsor) {
-		// TODO Auto-generated method stub
+	public Sponsor createSponsor( Sponsor sponsor) {
 		return null;
 	}
 
