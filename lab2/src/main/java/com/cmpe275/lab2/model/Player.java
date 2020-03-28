@@ -69,6 +69,14 @@ public class Player {
 		this.lastname = lastname;
 		this.email = email;
 	}
+	
+	public Player(String firstname, String lastname, String email, String description, Address address) {
+		this.firstname = firstname;
+		this.lastname = lastname;
+		this.email = email;
+		this.description = description;
+		this.address = address;
+	}
 
 	public List<Player> getOpponents() {
 		return opponents;
