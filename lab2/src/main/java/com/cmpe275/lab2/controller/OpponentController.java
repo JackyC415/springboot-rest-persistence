@@ -1,15 +1,20 @@
 package com.cmpe275.lab2.controller;
 
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RestController;
 
-import com.cmpe275.lab2.model.Player;
+import com.cmpe275.lab2.errors.BadRequestException;
+import com.cmpe275.lab2.errors.NotFoundException;
+import com.cmpe275.lab2.service.OpponenentServiceImpl;
 
 @RestController
 public class OpponentController {
 
+	@Autowired
+	private OpponenentServiceImpl opponentService;
 	/*
 	 * (9) Add an opponent relationship 
 	 * Path:opponents/{id1}/{id2} 
@@ -20,15 +25,25 @@ public class OpponentController {
 	 * record this opponent relationship.
 	 */
 	@PostMapping("/opponents/{id1}/{id2}")
-	public Player addOpponent(@PathVariable(value = "id") Long playerId) {
-
+	public String addOpponent(@PathVariable(value = "id1") Long playerId1,
+			@PathVariable(value = "id2") Long playerId2) {
 		/*
 		 * Error Handling: If either player does not exist, return 404. Return 400 for
 		 * other bad requests, e.g., the given two players are the same. If all is
 		 * successful, return HTTP code 200 and any informative text message in the HTTP
 		 * payload.
 		 */
-		return null;
+			try {
+				String result=opponentService.addOpponentRelationship(playerId1, playerId2);
+				return result;
+			}catch (NotFoundException e) {
+				throw e;
+			}catch (BadRequestException e) {
+				throw e;
+			}catch (Exception e) {
+				throw new BadRequestException("please provide valid ID");	
+			}
+		
 	}
 
 	/*
@@ -39,7 +54,8 @@ public class OpponentController {
 	 * This request removes the opponent relation between the two players.
 	 */
 	@DeleteMapping("/opponents/{id1}/{id2}")
-	public Player deleteOpponent(@PathVariable(value = "id") Long playerId) {
+	public String deleteOpponent(@PathVariable(value = "id1") Long playerId1,
+			@PathVariable(value = "id2") Long playerId2) {
 
 		/*
 		 * Error Handling: If either player does not exist, return 404. Return 400 for
@@ -47,7 +63,16 @@ public class OpponentController {
 		 * too. Otherwise, Remove this opponent relation. Return HTTP code 200 and a
 		 * meaningful text message if all is successful.
 		 */
-		return null;
+		try {
+			String result = opponentService.removeOpponentRelationship(playerId1, playerId2);
+			return result;
+		}catch (NotFoundException e) {
+			throw e;
+		}catch (BadRequestException e) {
+			throw e;
+		}catch (Exception e) {
+			throw new BadRequestException("please provide valid ID");	
+		}
 	}
 
 }

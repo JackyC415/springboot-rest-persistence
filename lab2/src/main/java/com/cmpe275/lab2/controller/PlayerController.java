@@ -1,6 +1,9 @@
 package com.cmpe275.lab2.controller;
 
+import javax.net.ssl.SSLEngineResult.Status;
+
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -12,8 +15,11 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.cmpe275.lab2.errors.BadRequestException;
+import com.cmpe275.lab2.errors.ErrorResponse;
+import com.cmpe275.lab2.errors.NotFoundException;
 import com.cmpe275.lab2.model.Address;
 import com.cmpe275.lab2.model.Player;
+import com.cmpe275.lab2.model.Sponsor;
 import com.cmpe275.lab2.service.PlayerService;
 
 @RestController
@@ -84,14 +90,24 @@ public class PlayerController {
 	 * This returns a deep player object in the requested format in its HTTP payload.
 	 */
 	@GetMapping("/player/{id}")
-	public Player getPlayer(@PathVariable(value = "id") Long playerId) {
-
-		Player player = null;
-//		playerService.getPlayer();
+	public ResponseEntity<Player> getPlayer(@PathVariable(value = "id") Long playerId) {
 
 		// Error Handling: If the player of the given user ID does not exist, the HTTP
 		// return code should be 404; if the given ID is not a valid number, return 400.
-		return null;
+		try {
+			Player result = playerService.getPlayer(playerId);
+			System.out.println("Player:");
+			System.out.println(result);
+			System.out.println("Opponents");
+			System.out.println(result.getOpponents());	
+			return new ResponseEntity<Player>(new Player(),HttpStatus.OK);
+			
+		}catch (NotFoundException e) {
+			throw e;
+		} catch(Exception e) {
+			throw new BadRequestException("please provide valid ID");	
+		}
+		
 	}
 
 	/**
@@ -104,16 +120,43 @@ public class PlayerController {
 	 * The object constructed from the parameters will completely replace the existing object in the server, except that it does not change the player’s list of opponents.
 	 */
 	@PutMapping("/player/{id}")
-	public Player updatePlayer(@PathVariable(value = "id") Long playerId,
-			@RequestParam(value = "lname", required = true) String lname,
+	public Player updatePlayer(@PathVariable(value = "id", required = true) Long playerId,
+			@RequestParam(value = "firstname", required = true) String fname,
+			@RequestParam(value = "lastname", required = true) String lname,
 			@RequestParam(value = "email", required = true) String email,
 			@RequestParam(value = "description", required = false) String description,
 			@RequestParam(value = "street", required = false) String street,
 			@RequestParam(value = "city", required = false) String city,
 			@RequestParam(value = "state", required = false) String state,
-			@RequestParam(value = "zip", required = false) String zip) {
+			@RequestParam(value = "zip", required = false) String zip,
+			@RequestParam(value = "sponsor", required = false) String sponsor) {
 
-		Player player = null;
+	
+			if(description!=null) {
+				description=description.trim();
+			}
+			if(street!=null) {
+				street=street.trim();
+			}
+			if(city!=null) {
+				city=city.trim();
+			}
+			if(zip!=null) {
+				zip=zip.trim();
+			}
+			if(sponsor!=null) {
+				sponsor=sponsor.trim();
+			}
+			fname=fname.trim();
+			lname=lname.trim();
+			email=email.trim();
+			if(fname.length()==0 || lname.length()==0 || email.length()==0) {
+				throw new BadRequestException("missing required parameters or bad parameters");
+			}
+			Address address = new Address(street,city,state,zip);
+			Player player = new Player(fname, lname, email, description, address);
+			player.setId(playerId);
+			Player resultPlayer=playerService.updatePlayer(player, sponsor);
 //		playerService.updatePlayer();
 
 		// Error Handling: If the player of the given user ID does not exist, the HTTP
@@ -130,13 +173,16 @@ public class PlayerController {
 	 */
 	@DeleteMapping("/player/{id}")
 	public Player deletePlayer(@PathVariable(value = "id") Long playerId) {
-
-		Player player = null;
-//		playerService.deletePlayer();
-
+		try {
+			Player result = playerService.deletePlayer(playerId);
+			return result;
+		}catch (NotFoundException e) {
+			throw e;
+		} catch(Exception e) {
+			throw new BadRequestException("please provide valid ID");	
+		}
 		// Error Handling: If the player with the given ID does not exist, return 404.
 		// Return 400 for other bad requests.
-		return null;
 	}
 
 }

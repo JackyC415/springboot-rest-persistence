@@ -9,6 +9,6 @@ public interface PlayerService {
 	
 	public Player createPlayer(Player player,String sponsorName);
 	public Player updatePlayer(Player player,String sponsorName);
-	public Player getPlayer(int id);
-	public Player deletePlayer(int id);
+	public Player getPlayer(long id);
+	public Player deletePlayer(long id);
 }

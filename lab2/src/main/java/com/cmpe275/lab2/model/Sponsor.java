@@ -12,6 +12,8 @@ import javax.persistence.Id;
 import javax.persistence.OneToMany;
 import javax.persistence.Table;
 
+import com.fasterxml.jackson.annotation.JsonManagedReference;
+
 @Entity
 @Table(name = "sponsor")
 public class Sponsor {
@@ -26,6 +28,7 @@ public class Sponsor {
 	private Address address;
 	
 	@OneToMany(mappedBy = "sponsor", cascade = {CascadeType.DETACH,CascadeType.MERGE,CascadeType.PERSIST,CascadeType.REFRESH})
+	@JsonManagedReference
 	List<Player>beneficiaries;
 
 	public Sponsor() {

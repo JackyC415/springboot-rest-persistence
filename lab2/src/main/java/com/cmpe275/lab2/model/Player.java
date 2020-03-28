@@ -8,6 +8,7 @@ import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Embedded;
 import javax.persistence.Entity;
+import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
@@ -16,6 +17,8 @@ import javax.persistence.JoinTable;
 import javax.persistence.ManyToMany;
 import javax.persistence.ManyToOne;
 import javax.persistence.Table;
+
+import com.fasterxml.jackson.annotation.JsonBackReference;
 
 @Entity
 @Table(name = "player")
@@ -43,21 +46,22 @@ public class Player {
 
 	@ManyToOne(cascade = {CascadeType.DETACH,CascadeType.MERGE,CascadeType.PERSIST,CascadeType.REFRESH})
 	@JoinColumn(name = "sponsor_id")
+	@JsonBackReference
 	private Sponsor sponsor;
 	
-	@ManyToMany
+	@ManyToMany(fetch = FetchType.EAGER)
 	@JoinTable(name="opponents_table",
 	 joinColumns=@JoinColumn(name="player_id"),
 	 inverseJoinColumns=@JoinColumn(name="opponent_id")
 	)
 	private List<Player>opponents;
 	
-	@ManyToMany
-	@JoinTable(name="opponents_table",
-	 joinColumns=@JoinColumn(name="opponent_id"),
-	 inverseJoinColumns=@JoinColumn(name="player_id")
-	)
-	private List<Player>opponentsOf;
+//	@ManyToMany(fetch = FetchType.EAGER)
+//	@JoinTable(name="opponents_table",
+//	 joinColumns=@JoinColumn(name="opponent_id"),
+//	 inverseJoinColumns=@JoinColumn(name="player_id")
+//	)
+//	private List<Player>opponentsOf;
 	
 	public Player() {
 		// TODO Auto-generated constructor stub
@@ -88,14 +92,14 @@ public class Player {
 	}
 
 
-	public List<Player> getOpponentsOf() {
-		return opponentsOf;
-	}
-
-
-	public void setOpponentsOf(List<Player> opponentsOf) {
-		this.opponentsOf = opponentsOf;
-	}
+//	public List<Player> getOpponentsOf() {
+//		return opponentsOf;
+//	}
+//
+//
+//	public void setOpponentsOf(List<Player> opponentsOf) {
+//		this.opponentsOf = opponentsOf;
+//	}
 
 
 	public Sponsor getSponsor() {
@@ -170,10 +174,10 @@ public class Player {
 		this.opponents.add(opponent);
 		
 		//add in opponentOf for the main player
-		if(this.opponentsOf==null) {
-			this.opponentsOf=new ArrayList<Player>();
-		}
-		this.opponentsOf.add(opponent);
+//		if(this.opponentsOf==null) {
+//			this.opponentsOf=new ArrayList<Player>();
+//		}
+//		this.opponentsOf.add(opponent);
 		
 		
 		//add in opponent for the opponent player
@@ -186,13 +190,20 @@ public class Player {
 				
 		
 		//add opponentOf for opponent player
-		List<Player>opponentsOf1=opponent.getOpponentsOf();
-		if(opponentsOf1==null) {
-			opponentsOf1=new ArrayList<Player>();
-		}
-		opponentsOf1.add(this);
-		opponent.setOpponentsOf(opponentsOf1);
+//		List<Player>opponentsOf1=opponent.getOpponentsOf();
+//		if(opponentsOf1==null) {
+//			opponentsOf1=new ArrayList<Player>();
+//		}
+//		opponentsOf1.add(this);
+//		opponent.setOpponentsOf(opponentsOf1);
 		
+	}
+	
+	public void removeOpponent(Player player) {
+		this.opponents.remove(player);
+//		this.opponentsOf.remove(player);
+		player.opponents.remove(this);
+//		player.opponentsOf.remove(this);
 	}
 	
 }

@@ -31,9 +31,9 @@ public class GlobalExceptionHandler {
 	public ResponseEntity<ErrorResponse> handleException(BadRequestException ex){
 		ErrorResponse err=new ErrorResponse();
 		err.setMessage(ex.getMessage());
-		err.setStatus(HttpStatus.CONFLICT.value());
+		err.setStatus(HttpStatus.BAD_REQUEST.value());
 		err.setTimestamp(System.currentTimeMillis());
 		
-		return new ResponseEntity<ErrorResponse>(err, HttpStatus.CONFLICT);
+		return new ResponseEntity<ErrorResponse>(err, HttpStatus.BAD_REQUEST);
 	}
 }
