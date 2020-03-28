@@ -10,6 +10,7 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.cmpe275.lab2.errors.BadRequestException;
+import com.cmpe275.lab2.errors.NotFoundException;
 import com.cmpe275.lab2.model.Address;
 import com.cmpe275.lab2.model.Sponsor;
 import com.cmpe275.lab2.service.SponsorService;
@@ -76,12 +77,12 @@ public class SponsorController {
 	 */
 	@GetMapping("/sponsor/{name}")
 	public Sponsor getSponsor(@PathVariable(value = "name") String sponsorName) {
-
-		Sponsor sponsor = sponsorService.getSponsor(sponsorName);
+		
+		Sponsor sponsor = sponsorService.getSponsor(sponsorName.trim());
 
 		// Error Handling: If the sponsor of the given name does not exist, the HTTP
 		// return code should be 404; otherwise, 200.
-		return null;
+		return sponsor;
 	}
 
 	/*
@@ -104,8 +105,7 @@ public class SponsorController {
 			@RequestParam(value = "state", required = false) String state,
 			@RequestParam(value = "zip", required = false) String zip) {
 
-		Sponsor sponsor = null;
-//		sponsorService.updateSponsor();
+		//sponsorService.updateSponsor();
 
 		// Error Handling: If the sponsor name does not exist, 404 should be returned.
 		// If required parameters are missing, return 400 instead. Otherwise, return 200.
@@ -123,12 +123,18 @@ public class SponsorController {
 
 	@DeleteMapping("/sponsor/{name}")
 	public Sponsor deletePlayer(@PathVariable(value = "name") String sponsorName) {
-
-		sponsorService.deleteSponsor(sponsorName);
+		
+		try {
+			Sponsor sponsor = sponsorService.deleteSponsor(sponsorName);
+			return sponsor;
+		} catch (NotFoundException e) {
+			throw e;
+		} catch (Exception e) {
+			throw new BadRequestException("Please provide valid ID");
+		}
 
 		// Error Handling: If there is still any player benefiting from this sponsor,
 		// return 400. If the sponsor with the given name does not exist, return 404.
-		return null;
 	}
 
 }
