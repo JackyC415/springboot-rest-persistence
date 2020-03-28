@@ -1,13 +1,11 @@
 package com.cmpe275.lab2.controller;
 
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.PutMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
@@ -79,8 +77,7 @@ public class SponsorController {
 	@GetMapping("/sponsor/{name}")
 	public Sponsor getSponsor(@PathVariable(value = "name") String sponsorName) {
 
-		Sponsor sponsor = null;
-//		sponsorService.getSponsor();
+		Sponsor sponsor = sponsorService.getSponsor(sponsorName);
 
 		// Error Handling: If the sponsor of the given name does not exist, the HTTP
 		// return code should be 404; otherwise, 200.
@@ -127,8 +124,7 @@ public class SponsorController {
 	@DeleteMapping("/sponsor/{name}")
 	public Sponsor deletePlayer(@PathVariable(value = "name") String sponsorName) {
 
-		Sponsor sponsor = null;
-//		sponsorService.deleteSponsor();
+		sponsorService.deleteSponsor(sponsorName);
 
 		// Error Handling: If there is still any player benefiting from this sponsor,
 		// return 400. If the sponsor with the given name does not exist, return 404.
