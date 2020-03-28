@@ -25,7 +25,7 @@ public class Sponsor {
 	@Embedded
 	private Address address;
 	
-	@OneToMany(mappedBy = "instructor", cascade = {CascadeType.DETACH,CascadeType.MERGE,CascadeType.PERSIST,CascadeType.REFRESH})
+	@OneToMany(mappedBy = "sponsor", cascade = {CascadeType.DETACH,CascadeType.MERGE,CascadeType.PERSIST,CascadeType.REFRESH})
 	List<Player>beneficiaries;
 
 	public Sponsor() {

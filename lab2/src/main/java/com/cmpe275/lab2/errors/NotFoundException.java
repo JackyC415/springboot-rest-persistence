@@ -1,4 +1,4 @@
-package com.cmpe275.lab2.controller;
+package com.cmpe275.lab2.errors;
 
 public class NotFoundException extends RuntimeException{
 

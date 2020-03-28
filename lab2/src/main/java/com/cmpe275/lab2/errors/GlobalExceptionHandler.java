@@ -1,4 +1,4 @@
-package com.cmpe275.lab2.controller;
+package com.cmpe275.lab2.errors;
 
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
