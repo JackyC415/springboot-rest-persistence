@@ -42,10 +42,12 @@ public class PlayerController {
 			@RequestParam(value = "street", required = false) String street,
 			@RequestParam(value = "city", required = false) String city,
 			@RequestParam(value = "state", required = false) String state,
-			@RequestParam(value = "zip", required = false) String zip) {
+			@RequestParam(value = "zip", required = false) String zip,
+			@RequestParam(value = "sponsor", required = false) String sname) {
 
-		Player player = null;
-//		playerService.createPlayer();
+		Address address = new Address(street,city,state,zip);
+		Player player = new Player(fname, lname, email, description, address);
+		playerService.createPlayer(player, sname);
 
 		// Error Handling: Return the HTTP status code 400 for errors like missing
 		// required parameters or bad parameters; return 409 if a player with the same
