@@ -16,7 +16,6 @@ import com.cmpe275.lab2.model.Player;
 import com.cmpe275.lab2.service.PlayerService;
 
 @RestController
-@RequestMapping("/player")
 public class PlayerController {
 
 	@Autowired
