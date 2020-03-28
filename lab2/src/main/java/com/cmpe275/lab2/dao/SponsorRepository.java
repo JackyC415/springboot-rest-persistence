@@ -6,4 +6,5 @@ import com.cmpe275.lab2.model.Sponsor;
 
 public interface SponsorRepository extends JpaRepository<Sponsor, String> {
 	
+	Sponsor findByName(String name);
 }
