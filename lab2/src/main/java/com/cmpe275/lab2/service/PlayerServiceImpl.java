@@ -30,22 +30,19 @@ public class PlayerServiceImpl implements PlayerService {
 	public Player createPlayer(Player player, String sponsorName) {
 		Player existingPlayer = playerDao.findByEmail(player.getEmail());
 		if (existingPlayer != null) {
-			throw new AlreadyExistsException("Player with given Id already present");
+			throw new AlreadyExistsException("Player with given Email Id already present");
 		} else {
-			Player newPlayer = new Player(player.getFirstname(), player.getLastname(), player.getEmail());
-			newPlayer.setDescription(player.getDescription());
-			newPlayer.setAddress(player.getAddress());
-			if(sponsorName!=null && sponsorName.length()!=0) {
+			if(sponsorName != null && sponsorName.length()!=0) {
 				Optional<Sponsor> sponsorResult = sponsorDao.findById(sponsorName);
 				if(sponsorResult.isPresent()) {
-					newPlayer.setSponsor(sponsorResult.get());
+					player.setSponsor(sponsorResult.get());
+					sponsorResult.get().getBeneficiaries().add(player);
 				}else {
-					throw new RuntimeException("Incorrect sponsor Id...Sponsor with given name is not valid");
+					throw new NotFoundException("Incorrect sponsor Id...Sponsor with given name is not valid");
 				}
 			}
-			
 			try {
-				Player result = playerDao.save(newPlayer);
+				Player result = playerDao.save(player);
 				return result;
 			} catch (Exception e) {
 				throw new BadRequestException(e.getMessage());

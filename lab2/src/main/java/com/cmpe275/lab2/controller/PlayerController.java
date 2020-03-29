@@ -1,5 +1,7 @@
 package com.cmpe275.lab2.controller;
 
+import java.util.List;
+
 import javax.net.ssl.SSLEngineResult.Status;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -51,7 +53,7 @@ public class PlayerController {
 			@RequestParam(value = "state", required = false) String state,
 			@RequestParam(value = "zip", required = false) String zip,
 			@RequestParam(value = "sponsor", required = false) String sponsor) {
-		
+		System.out.println("inside");
 		if(description!=null) {
 			description=description.trim();
 		}
@@ -77,11 +79,14 @@ public class PlayerController {
 		Player player = new Player(fname, lname, email, description, address);
 		
 		Player resultPlayer=playerService.createPlayer(player, sponsor);
-
+		
 		// Error Handling: Return the HTTP status code 400 for errors like missing
 		// required parameters or bad parameters; return 409 if a player with the same
 		// email ID already exists.
-		return new Player();
+		if(resultPlayer.getSponsor()!=null) {
+			resultPlayer.getSponsor().setBeneficiaries(null);
+		}
+		return resultPlayer;
 	}
 
 	/*
@@ -91,17 +96,21 @@ public class PlayerController {
 	 * This returns a deep player object in the requested format in its HTTP payload.
 	 */
 	@GetMapping("/player/{id}")
-	public ResponseEntity<Player> getPlayer(@PathVariable(value = "id") Long playerId) {
+	public Player getPlayer(@PathVariable(value = "id") Long playerId) {
 
 		// Error Handling: If the player of the given user ID does not exist, the HTTP
 		// return code should be 404; if the given ID is not a valid number, return 400.
 		try {
 			Player result = playerService.getPlayer(playerId);
-			System.out.println("Player:");
-			System.out.println(result);
-			System.out.println("Opponents");
-			System.out.println(result.getOpponents());	
-			return new ResponseEntity<Player>(new Player(),HttpStatus.OK);
+			List<Player> opponents = result.getOpponents();
+			for(Player opponent:opponents) {
+				opponent.setOpponents(null);
+			}
+			if(result.getSponsor()!=null){
+				result.getSponsor().setBeneficiaries(null);
+			}
+			
+			return result;
 			
 		}catch (NotFoundException e) {
 			throw e;
@@ -158,7 +167,6 @@ public class PlayerController {
 			Player player = new Player(fname, lname, email, description, address);
 			player.setId(playerId);
 			Player resultPlayer=playerService.updatePlayer(player, sponsor);
-//		playerService.updatePlayer();
 
 		// Error Handling: If the player of the given user ID does not exist, the HTTP
 		// return code should be 404; if the given ID is not a valid number, return 400.
@@ -176,7 +184,15 @@ public class PlayerController {
 	public Player deletePlayer(@PathVariable(value = "id") Long playerId) {
 		try {
 			Player result = playerService.deletePlayer(playerId);
+			List<Player> opponents = result.getOpponents();
+			for(Player opponent:opponents) {
+				opponent.setOpponents(null);
+			}
+			if(result.getSponsor()!=null){
+				result.getSponsor().setBeneficiaries(null);
+			}
 			return result;
+			
 		}catch (NotFoundException e) {
 			throw e;
 		} catch(Exception e) {

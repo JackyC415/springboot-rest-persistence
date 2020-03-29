@@ -9,20 +9,18 @@ import org.springframework.web.servlet.mvc.method.annotation.ResponseEntityExcep
 @ControllerAdvice
 public class GlobalExceptionHandler extends ResponseEntityExceptionHandler{
 	
-//	@ExceptionHandler(NotFoundException.class)
-//	public ResponseEntity<ErrorResponse> handleException(NotFoundException ex){
-//		System.out.println("inside 1");
-//		ErrorResponse err=new ErrorResponse();
-//		err.setMessage(ex.getMessage());
-//		err.setStatus(HttpStatus.NOT_FOUND.value());
-//		err.setTimestamp(System.currentTimeMillis());
-//		
-//		return new ResponseEntity<ErrorResponse>(err, HttpStatus.NOT_FOUND);
-//	}
+	@ExceptionHandler(NotFoundException.class)
+	public ResponseEntity<ErrorResponse> handleException(NotFoundException ex){
+		ErrorResponse err=new ErrorResponse();
+		err.setMessage(ex.getMessage());
+		err.setStatus(HttpStatus.NOT_FOUND.value());
+		err.setTimestamp(System.currentTimeMillis());
+		
+		return new ResponseEntity<ErrorResponse>(err, HttpStatus.NOT_FOUND);
+	}
 	
 	@ExceptionHandler(AlreadyExistsException.class)
 	public ResponseEntity<ErrorResponse> handleException(AlreadyExistsException ex){
-		System.out.println("inside 2");
 		ErrorResponse err=new ErrorResponse();
 		err.setMessage(ex.getMessage());
 		err.setStatus(HttpStatus.CONFLICT.value());
@@ -34,7 +32,6 @@ public class GlobalExceptionHandler extends ResponseEntityExceptionHandler{
 	
 	@ExceptionHandler(BadRequestException.class)
 	public ResponseEntity<ErrorResponse> handleException(BadRequestException ex){
-		System.out.println("inside 3");
 		ErrorResponse err=new ErrorResponse();
 		err.setMessage(ex.getMessage());
 		err.setStatus(HttpStatus.BAD_REQUEST.value());
@@ -42,5 +39,13 @@ public class GlobalExceptionHandler extends ResponseEntityExceptionHandler{
 		
 		return new ResponseEntity<ErrorResponse>(err, HttpStatus.BAD_REQUEST);
 	}
+	
+//	@ExceptionHandler
+//	public ResponseEntity<ErrorResponse> handleException(Exception ex){
+//		ErrorResponse err=new ErrorResponse();
+//		err.setStatus(HttpStatus.BAD_REQUEST.value());
+//		err.setTimestamp(System.currentTimeMillis());
+//		return new ResponseEntity<ErrorResponse>(err, HttpStatus.BAD_REQUEST);
+//	}
 //	
 }

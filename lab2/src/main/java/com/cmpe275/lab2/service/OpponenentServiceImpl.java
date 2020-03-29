@@ -30,7 +30,7 @@ public class OpponenentServiceImpl implements OpponentService {
 		Player pl2=player2.get();
 		List<Player> opponents = pl1.getOpponents();
 		if(opponents!=null && opponents.contains(pl2)) {
-			throw new BadRequestException("Players are already opponents");
+			return "Suceess.....Already opponent of each other";
 		}
 		pl1.addOpponent(pl2);
 		playerDao.save(pl1);
