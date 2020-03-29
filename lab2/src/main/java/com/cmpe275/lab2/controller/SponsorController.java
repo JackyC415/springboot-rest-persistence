@@ -77,7 +77,7 @@ public class SponsorController {
 	 */
 	@GetMapping("/sponsor/{name}")
 	public Sponsor getSponsor(@PathVariable(value = "name") String sponsorName) {
-		
+
 		Sponsor sponsor = sponsorService.getSponsor(sponsorName.trim());
 
 		// Error Handling: If the sponsor of the given name does not exist, the HTTP
@@ -105,11 +105,28 @@ public class SponsorController {
 			@RequestParam(value = "state", required = false) String state,
 			@RequestParam(value = "zip", required = false) String zip) {
 
-		//sponsorService.updateSponsor();
+		sponsorName = sponsorName.trim();
+		if (description != null) {
+			description = description.trim();
+		}
+		if (street != null) {
+			street = street.trim();
+		}
+		if (city != null) {
+			city = city.trim();
+		}
+		if (zip != null) {
+			zip = zip.trim();
+		}
+
+		Address address = new Address(street, city, state, zip);
+		Sponsor sponsor = new Sponsor(sponsorName, description, address);
+		Sponsor updatedSponsor = sponsorService.updateSponsor(sponsor);
 
 		// Error Handling: If the sponsor name does not exist, 404 should be returned.
-		// If required parameters are missing, return 400 instead. Otherwise, return 200.
-		return null;
+		// If required parameters are missing, return 400 instead. Otherwise, return
+		// 200.
+		return updatedSponsor;
 	}
 
 	/*
@@ -122,8 +139,8 @@ public class SponsorController {
 	 */
 
 	@DeleteMapping("/sponsor/{name}")
-	public Sponsor deletePlayer(@PathVariable(value = "name") String sponsorName) {
-		
+	public Sponsor deleteSponsor(@PathVariable(value = "name") String sponsorName) {
+
 		try {
 			Sponsor sponsor = sponsorService.deleteSponsor(sponsorName);
 			return sponsor;
