@@ -35,7 +35,17 @@ public class SponsorServiceImpl implements SponsorService {
 
 	@Override
 	public Sponsor updateSponsor(Sponsor sponsor) {
-		return null;
+		try {
+			Sponsor existingSponsor = sponsorDao.findByName(sponsor.getName());
+			if (existingSponsor != null) {
+				Sponsor updatedSponsor = sponsorDao.saveAndFlush(sponsor);
+				return updatedSponsor;
+			} else {
+				throw new NotFoundException("Sponsor does not exist!");
+			}
+		} catch (Exception e) {
+			throw new BadRequestException(e.fillInStackTrace());
+		}
 	}
 
 	@Override
@@ -57,9 +67,9 @@ public class SponsorServiceImpl implements SponsorService {
 		try {
 			Sponsor sponsorName = sponsorDao.findByName(name);
 			if (sponsorName != null) {
-				throw new NotFoundException("Sponsor does not exist!");
-			} else {
 				return sponsorDao.deleteByName(name);
+			} else {
+				throw new NotFoundException("Sponsor does not exist!");
 			}
 		} catch (Exception e) {
 			throw new RuntimeException(e.fillInStackTrace());
