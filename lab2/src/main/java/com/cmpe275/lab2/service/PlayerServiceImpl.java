@@ -96,10 +96,14 @@ public class PlayerServiceImpl implements PlayerService {
 	public Player deletePlayer(long id) {
 		Optional<Player> result = playerDao.findById(id);
 		if(result.isPresent()) {
-			Player res=result.get();
-			playerDao.deleteById(id);
-			
-			return res;
+			Player player=result.get();
+			List<Player> opponents = player.getOpponents();
+			for(Player opponent:opponents) {
+				List<Player> newOpponents = opponent.getOpponents();
+				newOpponents.remove(player);
+			}
+			playerDao.deleteById(player.getId());
+			return player;
 		}else {
 			throw new NotFoundException("player with given Id does not found");
 		}

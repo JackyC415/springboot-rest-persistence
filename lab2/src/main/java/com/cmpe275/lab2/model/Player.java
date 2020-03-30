@@ -46,7 +46,7 @@ public class Player {
 	@JoinColumn(name = "sponsor_id")
 	private Sponsor sponsor;
 	
-	@ManyToMany(fetch = FetchType.EAGER)
+	@ManyToMany(fetch = FetchType.EAGER, cascade = {CascadeType.DETACH,CascadeType.MERGE,CascadeType.PERSIST,CascadeType.REFRESH})
 	@JoinTable(name="opponents_table",
 	 joinColumns=@JoinColumn(name="player_id"),
 	 inverseJoinColumns=@JoinColumn(name="opponent_id")

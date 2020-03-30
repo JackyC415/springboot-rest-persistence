@@ -1,27 +1,19 @@
 package com.cmpe275.lab2.controller;
 
 import java.util.List;
-
-import javax.net.ssl.SSLEngineResult.Status;
-
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.http.HttpStatus;
-import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.PutMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.cmpe275.lab2.errors.BadRequestException;
-import com.cmpe275.lab2.errors.ErrorResponse;
 import com.cmpe275.lab2.errors.NotFoundException;
 import com.cmpe275.lab2.model.Address;
 import com.cmpe275.lab2.model.Player;
-import com.cmpe275.lab2.model.Sponsor;
 import com.cmpe275.lab2.service.PlayerService;
 
 @RestController
@@ -108,8 +100,7 @@ public class PlayerController {
 			}
 			if(result.getSponsor()!=null){
 				result.getSponsor().setBeneficiaries(null);
-			}
-			
+			}	
 			return result;
 			
 		}catch (NotFoundException e) {
@@ -191,12 +182,11 @@ public class PlayerController {
 			if(result.getSponsor()!=null){
 				result.getSponsor().setBeneficiaries(null);
 			}
-			return result;
-			
+			return result;		
 		}catch (NotFoundException e) {
 			throw e;
 		} catch(Exception e) {
-			throw new BadRequestException("please provide valid ID");	
+			throw e;	
 		}
 		// Error Handling: If the player with the given ID does not exist, return 404.
 		// Return 400 for other bad requests.
