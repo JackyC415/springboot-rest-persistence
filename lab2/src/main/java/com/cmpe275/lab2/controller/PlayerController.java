@@ -132,7 +132,6 @@ public class PlayerController {
 			@RequestParam(value = "zip", required = false) String zip,
 			@RequestParam(value = "sponsor", required = false) String sponsor) {
 
-	
 			if(description!=null) {
 				description=description.trim();
 			}
@@ -158,10 +157,20 @@ public class PlayerController {
 			Player player = new Player(fname, lname, email, description, address);
 			player.setId(playerId);
 			Player resultPlayer=playerService.updatePlayer(player, sponsor);
+			
+			if(resultPlayer.getSponsor()!=null) {
+				resultPlayer.getSponsor().setBeneficiaries(null);
+			}
+			
+			List<Player> opponents = resultPlayer.getOpponents();
+			for(Player opponent:opponents) {
+				opponent.setOpponents(null);
+			}
+			
+			return resultPlayer;
 
 		// Error Handling: If the player of the given user ID does not exist, the HTTP
 		// return code should be 404; if the given ID is not a valid number, return 400.
-		return null;
 	}
 
 	/*

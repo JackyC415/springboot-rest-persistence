@@ -42,7 +42,7 @@ public class PlayerServiceImpl implements PlayerService {
 				}
 			}
 			try {
-				Player result = playerDao.save(player);
+				Player result = playerDao.saveAndFlush(player);
 				return result;
 			} catch (Exception e) {
 				throw new BadRequestException(e.getMessage());
@@ -52,36 +52,36 @@ public class PlayerServiceImpl implements PlayerService {
 
 	@Override
 	public Player updatePlayer(Player player, String sponsorName) {
-		try {
 			Optional<Player> existingPlayer = playerDao.findById(player.getId());
-			
 			if (!existingPlayer.isPresent()) {
-				System.out.println("inside not present");
 				throw new NotFoundException("Player with given Id not present");
 			} else {
-				List<Player> opponents = existingPlayer.get().getOpponents();
-				for(Player opponent:opponents) {
-					player.addOpponent(opponent);
+				Player existingPlayerFinal=existingPlayer.get();
+				Player existingPlayerWithEmail = playerDao.findByEmail(player.getEmail());
+				if (existingPlayerWithEmail != null && existingPlayerWithEmail.getId()!=player.getId()) {
+					throw new AlreadyExistsException("Player with given Email Id already present");
 				}
-				
+				existingPlayerFinal.setFirstname(player.getFirstname());
+				existingPlayerFinal.setLastname(player.getLastname());
+				existingPlayerFinal.setDescription(player.getDescription());
+				existingPlayerFinal.setEmail(player.getEmail());
+				existingPlayerFinal.setAddress(player.getAddress());
 				if(sponsorName!=null && sponsorName.length()!=0) {
 					Optional<Sponsor> sponsorResult = sponsorDao.findById(sponsorName);
 					if(sponsorResult.isPresent()) {
-						player.setSponsor(sponsorResult.get());
+						existingPlayerFinal.setSponsor(sponsorResult.get());
 					}else {
-						System.out.println("inside");
-						throw new RuntimeException("Incorrect sponsor Id...Sponsor with given name is not valid");
+						throw new NotFoundException("Incorrect sponsor Id...Sponsor with given name is not valid");
 					}
+				}	
+				try {
+					return playerDao.save(existingPlayerFinal);
+				} catch (Exception e) {
+					throw new BadRequestException(e.getMessage());
 				}
-				System.out.println(player);
-				System.out.println(player.getOpponents());
-				return playerDao.saveAndFlush(player);
 			}
-		} catch (Exception e) {
-			throw new BadRequestException(e.fillInStackTrace());
-		}
 	}
-
+	
 	@Override
 	public Player getPlayer(long id) {
 		Optional<Player> result = playerDao.findById(id);
