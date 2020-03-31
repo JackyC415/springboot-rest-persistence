@@ -1,6 +1,5 @@
 package com.cmpe275.lab2.model;
 
-
 import java.util.ArrayList;
 import java.util.List;
 
@@ -17,6 +16,8 @@ import javax.persistence.JoinTable;
 import javax.persistence.ManyToMany;
 import javax.persistence.ManyToOne;
 import javax.persistence.Table;
+
+import com.fasterxml.jackson.annotation.JsonBackReference;
 
 @Entity
 @Table(name = "player")
@@ -42,28 +43,25 @@ public class Player {
 	@Embedded
 	private Address address;
 
-	@ManyToOne(cascade = {CascadeType.DETACH,CascadeType.MERGE,CascadeType.PERSIST,CascadeType.REFRESH})
+	@ManyToOne(cascade = { CascadeType.DETACH, CascadeType.MERGE, CascadeType.PERSIST, CascadeType.REFRESH })
 	@JoinColumn(name = "sponsor_id")
+	@JsonBackReference
 	private Sponsor sponsor;
-	
-	@ManyToMany(fetch = FetchType.EAGER, cascade = {CascadeType.DETACH	,CascadeType.PERSIST,CascadeType.REFRESH})
-	@JoinTable(name="opponents_table",
-	 joinColumns=@JoinColumn(name="player_id"),
-	 inverseJoinColumns=@JoinColumn(name="opponent_id")
-	)
-	private List<Player>opponents;
-	
+
+	@ManyToMany(fetch = FetchType.EAGER, cascade = { CascadeType.DETACH, CascadeType.PERSIST, CascadeType.REFRESH })
+	@JoinTable(name = "opponents_table", joinColumns = @JoinColumn(name = "player_id"), inverseJoinColumns = @JoinColumn(name = "opponent_id"))
+	private List<Player> opponents;
+
 	public Player() {
-		// TODO Auto-generated constructor stub
+		
 	}
-	
-	
+
 	public Player(String firstname, String lastname, String email) {
 		this.firstname = firstname;
 		this.lastname = lastname;
 		this.email = email;
 	}
-	
+
 	public Player(String firstname, String lastname, String email, String description, Address address) {
 		this.firstname = firstname;
 		this.lastname = lastname;
@@ -76,11 +74,10 @@ public class Player {
 		return opponents;
 	}
 
-
 	public void setOpponents(List<Player> opponents) {
 		this.opponents = opponents;
 	}
-	
+
 	public Sponsor getSponsor() {
 		return sponsor;
 	}
@@ -142,30 +139,28 @@ public class Player {
 		return "Player [id=" + id + ", firstname=" + firstname + ", lastname=" + lastname + ", email=" + email
 				+ ", description=" + description + ", address=" + address + "]";
 	}
-	
-	
+
 	public void addOpponent(Player opponent) {
-		
-		//add in opponent for main player
-		if(this.opponents==null) {
-			this.opponents=new ArrayList<Player>();
+
+		// add in opponent for main player
+		if (this.opponents == null) {
+			this.opponents = new ArrayList<Player>();
 		}
 		this.opponents.add(opponent);
-		
-		
-		//add in opponent for the opponent player
-		List<Player>opponents1=opponent.getOpponents();
-		if(opponents1==null) {
-			opponents1=new ArrayList<Player>();
+
+		// add in opponent for the opponent player
+		List<Player> opponents1 = opponent.getOpponents();
+		if (opponents1 == null) {
+			opponents1 = new ArrayList<Player>();
 		}
 		opponents1.add(this);
 		opponent.setOpponents(opponents1);
-		
+
 	}
-	
+
 	public void removeOpponent(Player player) {
 		this.opponents.remove(player);
 		player.opponents.remove(this);
 	}
-	
+
 }
