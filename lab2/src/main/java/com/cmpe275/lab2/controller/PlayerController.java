@@ -1,6 +1,4 @@
 package com.cmpe275.lab2.controller;
-
-import java.util.List;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -11,7 +9,6 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.cmpe275.lab2.errors.BadRequestException;
-import com.cmpe275.lab2.errors.NotFoundException;
 import com.cmpe275.lab2.model.Address;
 import com.cmpe275.lab2.model.Player;
 import com.cmpe275.lab2.service.PlayerService;
@@ -45,7 +42,6 @@ public class PlayerController {
 			@RequestParam(value = "state", required = false) String state,
 			@RequestParam(value = "zip", required = false) String zip,
 			@RequestParam(value = "sponsor", required = false) String sponsor) {
-		System.out.println("inside");
 		if(description!=null) {
 			description=description.trim();
 		}
@@ -71,13 +67,6 @@ public class PlayerController {
 		Player player = new Player(fname, lname, email, description, address);
 		
 		Player resultPlayer=playerService.createPlayer(player, sponsor);
-		
-		// Error Handling: Return the HTTP status code 400 for errors like missing
-		// required parameters or bad parameters; return 409 if a player with the same
-		// email ID already exists.
-		if(resultPlayer.getSponsor()!=null) {
-			resultPlayer.getSponsor().setBeneficiaries(null);
-		}
 		return resultPlayer;
 	}
 
@@ -89,26 +78,8 @@ public class PlayerController {
 	 */
 	@GetMapping("/player/{id}")
 	public Player getPlayer(@PathVariable(value = "id") Long playerId) {
-
-		// Error Handling: If the player of the given user ID does not exist, the HTTP
-		// return code should be 404; if the given ID is not a valid number, return 400.
-		try {
 			Player result = playerService.getPlayer(playerId);
-			List<Player> opponents = result.getOpponents();
-			for(Player opponent:opponents) {
-				opponent.setOpponents(null);
-			}
-			if(result.getSponsor()!=null){
-				result.getSponsor().setBeneficiaries(null);
-			}	
-			return result;
-			
-		}catch (NotFoundException e) {
-			throw e;
-		} catch(Exception e) {
-			throw new BadRequestException("please provide valid ID");	
-		}
-		
+			return result;		
 	}
 
 	/**
@@ -156,16 +127,7 @@ public class PlayerController {
 			Address address = new Address(street,city,state,zip);
 			Player player = new Player(fname, lname, email, description, address);
 			player.setId(playerId);
-			Player resultPlayer=playerService.updatePlayer(player, sponsor);
-			
-			if(resultPlayer.getSponsor()!=null) {
-				resultPlayer.getSponsor().setBeneficiaries(null);
-			}
-			
-			List<Player> opponents = resultPlayer.getOpponents();
-			for(Player opponent:opponents) {
-				opponent.setOpponents(null);
-			}
+			Player resultPlayer = playerService.updatePlayer(player, sponsor);
 			
 			return resultPlayer;
 
@@ -182,21 +144,8 @@ public class PlayerController {
 	 */
 	@DeleteMapping("/player/{id}")
 	public Player deletePlayer(@PathVariable(value = "id") Long playerId) {
-		try {
-			Player result = playerService.deletePlayer(playerId);
-			List<Player> opponents = result.getOpponents();
-			for(Player opponent:opponents) {
-				opponent.setOpponents(null);
-			}
-			if(result.getSponsor()!=null){
-				result.getSponsor().setBeneficiaries(null);
-			}
-			return result;		
-		}catch (NotFoundException e) {
-			throw e;
-		} catch(Exception e) {
-			throw e;	
-		}
+		Player result = playerService.deletePlayer(playerId);
+		return result;		
 		// Error Handling: If the player with the given ID does not exist, return 404.
 		// Return 400 for other bad requests.
 	}

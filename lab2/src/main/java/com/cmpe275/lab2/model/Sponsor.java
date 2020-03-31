@@ -7,11 +7,12 @@ import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Embedded;
 import javax.persistence.Entity;
+import javax.persistence.FetchType;
 import javax.persistence.Id;
 import javax.persistence.OneToMany;
 import javax.persistence.Table;
 
-import com.fasterxml.jackson.annotation.JsonManagedReference;
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 
 @Entity
 @Table(name = "sponsor")
@@ -27,8 +28,8 @@ public class Sponsor {
 	private Address address;
 
 	@OneToMany(mappedBy = "sponsor", cascade = { CascadeType.DETACH, CascadeType.MERGE, CascadeType.PERSIST,
-			CascadeType.REFRESH })
-	@JsonManagedReference
+			CascadeType.REFRESH }, fetch = FetchType.EAGER)
+	@JsonIgnoreProperties({"sponsor","opponents"})
 	List<Player> beneficiaries;
 
 	public Sponsor() {

@@ -10,7 +10,6 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.cmpe275.lab2.errors.BadRequestException;
-import com.cmpe275.lab2.errors.NotFoundException;
 import com.cmpe275.lab2.model.Address;
 import com.cmpe275.lab2.model.Sponsor;
 import com.cmpe275.lab2.service.SponsorService;
@@ -40,7 +39,6 @@ public class SponsorController {
 			@RequestParam(value = "state", required = false) String state,
 			@RequestParam(value = "zip", required = false) String zip) {
 
-		name=name.trim();
 		if(description!=null) {
 			description=description.trim();
 		}
@@ -56,15 +54,15 @@ public class SponsorController {
 		if(zip!=null) {
 			zip=zip.trim();
 		}
-		if(name.length()==0) {
-			throw new BadRequestException("name can not be empty");
+		
+		name=name.trim();
+		if(name.length() < 2) {
+			throw new BadRequestException("Name should be atleast 2 characters long");
 		}
 		Address address = new Address(street,city,state,zip);
 		Sponsor sponsor = new Sponsor(name, description, address);
 		Sponsor newSponsor = sponsorService.createSponsor(sponsor);
-
-		// Error Handling: If the sponsor object already exists, return 409. For other
-		// bad requests, return 400.
+		
 		return newSponsor;
 	}
 
@@ -77,11 +75,14 @@ public class SponsorController {
 	 */
 	@GetMapping("/sponsor/{name}")
 	public Sponsor getSponsor(@PathVariable(value = "name") String sponsorName) {
+		sponsorName = sponsorName.trim();
+		
+		if(sponsorName.length() < 2) {
+			throw new BadRequestException("Name should be atleast 2 characters long");
+		}
 
 		Sponsor sponsor = sponsorService.getSponsor(sponsorName.trim());
-
-		// Error Handling: If the sponsor of the given name does not exist, the HTTP
-		// return code should be 404; otherwise, 200.
+		
 		return sponsor;
 	}
 
@@ -104,8 +105,7 @@ public class SponsorController {
 			@RequestParam(value = "city", required = false) String city,
 			@RequestParam(value = "state", required = false) String state,
 			@RequestParam(value = "zip", required = false) String zip) {
-
-		sponsorName = sponsorName.trim();
+		
 		if (description != null) {
 			description = description.trim();
 		}
@@ -118,6 +118,13 @@ public class SponsorController {
 		if (zip != null) {
 			zip = zip.trim();
 		}
+		
+		sponsorName = sponsorName.trim();
+		
+		if(sponsorName.length() < 2) {
+			throw new BadRequestException("Name should be atleast 2 characters long");
+		}
+
 
 		Address address = new Address(street, city, state, zip);
 		Sponsor sponsor = new Sponsor(sponsorName, description, address);
@@ -141,14 +148,14 @@ public class SponsorController {
 	@DeleteMapping("/sponsor/{name}")
 	public Sponsor deleteSponsor(@PathVariable(value = "name") String sponsorName) {
 
-		try {
-			Sponsor sponsor = sponsorService.deleteSponsor(sponsorName);
-			return sponsor;
-		} catch (NotFoundException e) {
-			throw e;
-		} catch (Exception e) {
-			throw new BadRequestException("Please provide valid ID");
+		sponsorName = sponsorName.trim();
+		
+		if(sponsorName.length() < 2) {
+			throw new BadRequestException("Name should be atleast 2 characters long");
 		}
+		
+		Sponsor sponsor = sponsorService.deleteSponsor(sponsorName);
+		return sponsor;
 
 		// Error Handling: If there is still any player benefiting from this sponsor,
 		// return 400. If the sponsor with the given name does not exist, return 404.

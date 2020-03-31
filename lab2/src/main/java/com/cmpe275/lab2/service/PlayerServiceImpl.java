@@ -9,7 +9,6 @@ import org.springframework.stereotype.Service;
 import com.cmpe275.lab2.dao.PlayerRepository;
 import com.cmpe275.lab2.dao.SponsorRepository;
 import com.cmpe275.lab2.errors.AlreadyExistsException;
-import com.cmpe275.lab2.errors.BadRequestException;
 import com.cmpe275.lab2.errors.NotFoundException;
 import com.cmpe275.lab2.model.Player;
 import com.cmpe275.lab2.model.Sponsor;
@@ -45,7 +44,7 @@ public class PlayerServiceImpl implements PlayerService {
 				Player result = playerDao.saveAndFlush(player);
 				return result;
 			} catch (Exception e) {
-				throw new BadRequestException(e.getMessage());
+				throw new RuntimeException(e.fillInStackTrace());
 			}
 		}
 	}
@@ -77,16 +76,22 @@ public class PlayerServiceImpl implements PlayerService {
 				try {
 					return playerDao.save(existingPlayerFinal);
 				} catch (Exception e) {
-					throw new BadRequestException(e.getMessage());
+					throw new RuntimeException(e.fillInStackTrace());
 				}
 			}
-	}
+	}	
+	
 	
 	@Override
 	public Player getPlayer(long id) {
 		Optional<Player> result = playerDao.findById(id);
 		if(result.isPresent()) {
-			return result.get();
+			
+			try {
+				return result.get();
+			} catch (Exception e) {
+				throw new RuntimeException(e.fillInStackTrace());
+			}
 		}else {
 			throw new NotFoundException("player with given Id does not found");
 		}
@@ -102,8 +107,17 @@ public class PlayerServiceImpl implements PlayerService {
 				List<Player> newOpponents = opponent.getOpponents();
 				newOpponents.remove(player);
 			}
-			playerDao.deleteById(player.getId());
-			return player;
+			Sponsor sponsor=player.getSponsor();
+			if(sponsor!=null) {
+				sponsor.getBeneficiaries().remove(player);
+			}
+			
+			try {
+				playerDao.delete(player);
+				return player;
+			} catch (Exception e) {
+				throw new RuntimeException(e.fillInStackTrace());
+			}
 		}else {
 			throw new NotFoundException("player with given Id does not found");
 		}

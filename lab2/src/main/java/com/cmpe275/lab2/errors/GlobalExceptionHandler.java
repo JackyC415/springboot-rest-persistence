@@ -40,12 +40,12 @@ public class GlobalExceptionHandler extends ResponseEntityExceptionHandler{
 		return new ResponseEntity<ErrorResponse>(err, HttpStatus.BAD_REQUEST);
 	}
 	
-//	@ExceptionHandler
-//	public ResponseEntity<ErrorResponse> handleException(Exception ex){
-//		ErrorResponse err=new ErrorResponse();
-//		err.setStatus(HttpStatus.BAD_REQUEST.value());
-//		err.setTimestamp(System.currentTimeMillis());
-//		return new ResponseEntity<ErrorResponse>(err, HttpStatus.BAD_REQUEST);
-//	}
-//	
+	@ExceptionHandler
+	public ResponseEntity<ErrorResponse> handleException(Exception ex){
+		ErrorResponse err=new ErrorResponse();
+		err.setStatus(HttpStatus.SERVICE_UNAVAILABLE.value());
+		err.setTimestamp(System.currentTimeMillis());
+		return new ResponseEntity<ErrorResponse>(err, HttpStatus.SERVICE_UNAVAILABLE);
+	}
+	
 }

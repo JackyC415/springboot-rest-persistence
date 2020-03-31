@@ -17,7 +17,7 @@ import javax.persistence.ManyToMany;
 import javax.persistence.ManyToOne;
 import javax.persistence.Table;
 
-import com.fasterxml.jackson.annotation.JsonBackReference;
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 
 @Entity
 @Table(name = "player")
@@ -45,11 +45,12 @@ public class Player {
 
 	@ManyToOne(cascade = { CascadeType.DETACH, CascadeType.MERGE, CascadeType.PERSIST, CascadeType.REFRESH })
 	@JoinColumn(name = "sponsor_id")
-	@JsonBackReference
+	@JsonIgnoreProperties({"beneficiaries"})
 	private Sponsor sponsor;
 
 	@ManyToMany(fetch = FetchType.EAGER, cascade = { CascadeType.DETACH, CascadeType.PERSIST, CascadeType.REFRESH })
 	@JoinTable(name = "opponents_table", joinColumns = @JoinColumn(name = "player_id"), inverseJoinColumns = @JoinColumn(name = "opponent_id"))
+	@JsonIgnoreProperties({"sponsor","opponents"})
 	private List<Player> opponents;
 
 	public Player() {
