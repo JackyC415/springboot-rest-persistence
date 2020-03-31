@@ -1,6 +1,5 @@
 package com.cmpe275.lab2.model;
 
-
 import java.util.ArrayList;
 import java.util.List;
 
@@ -11,6 +10,8 @@ import javax.persistence.Entity;
 import javax.persistence.Id;
 import javax.persistence.OneToMany;
 import javax.persistence.Table;
+
+import com.fasterxml.jackson.annotation.JsonManagedReference;
 
 @Entity
 @Table(name = "sponsor")
@@ -24,14 +25,16 @@ public class Sponsor {
 
 	@Embedded
 	private Address address;
-	
-	@OneToMany(mappedBy = "sponsor", cascade = {CascadeType.DETACH,CascadeType.MERGE,CascadeType.PERSIST,CascadeType.REFRESH})
-	List<Player>beneficiaries;
+
+	@OneToMany(mappedBy = "sponsor", cascade = { CascadeType.DETACH, CascadeType.MERGE, CascadeType.PERSIST,
+			CascadeType.REFRESH })
+	@JsonManagedReference
+	List<Player> beneficiaries;
 
 	public Sponsor() {
-		// TODO Auto-generated constructor stub
+
 	}
-	
+
 	public Sponsor(String name, String description, Address address) {
 		this.name = name;
 		this.description = description;
@@ -74,10 +77,10 @@ public class Sponsor {
 	public String toString() {
 		return "Sponsor [name=" + name + ", description=" + description + ", address=" + address + "]";
 	}
-	
+
 	public void addBeneficiary(Player player) {
-		if(this.beneficiaries==null) {
-			this.beneficiaries=new ArrayList<Player>();
+		if (this.beneficiaries == null) {
+			this.beneficiaries = new ArrayList<Player>();
 		}
 		this.beneficiaries.add(player);
 	}
